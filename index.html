@@ -152,18 +152,18 @@
         }
         .player-photo.visible { display: block; }
 
-        /* === ЛОГО КОМАНДЫ — белая подложка почти не выглядывает из-за логотипа === */
+        /* === ЛОГО КОМАНДЫ — маленькая подложка, белое почти не выглядывает === */
 .team-logo {
     position: absolute;
     top: 14px;
-    width: 96px;
-    height: 96px;
+    width: 64px;                                   /* сам блок меньше */
+    height: 64px;
     z-index: 8;
-    background-size: 94%;                          /* лого почти на всю подложку */
+    background-size: 96%;                          /* лого почти на всю площадь */
     background-position: center;
     background-repeat: no-repeat;
-    background-color: rgba(255, 255, 255, 0.85);   /* белую вернул, но её почти не видно */
-    border-radius: 8px;                            /* скругление по размеру лого */
+    background-color: rgba(255, 255, 255, 0.85);   /* белая, но её почти не видно */
+    border-radius: 6px;                            /* скругление под размер блока */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     display: none;
     pointer-events: none;
