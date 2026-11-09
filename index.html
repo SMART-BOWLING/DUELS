@@ -351,19 +351,44 @@
         // --- СКАЧИВАНИЕ ---
         document.getElementById('downloadBtn').onclick = async () => {
             const container = document.getElementById('cardContainer');
-            try {
-                const originalTransform = container.style.transform;
-                container.style.transform = 'none';
 
-                const canvas = await html2canvas(container, {
+            // Клонируем карточку, чтобы transform: scale превью не влиял на рендеринг
+            const clone = container.cloneNode(true);
+            clone.style.transform = 'none';
+            clone.style.transformOrigin = '0 0';
+            clone.style.position = 'fixed';
+            clone.style.top = '-10000px';
+            clone.style.left = '-10000px';
+            clone.style.width = '700px';
+            clone.style.height = '700px';
+            clone.style.margin = '0';
+            clone.style.zIndex = '-1';
+            document.body.appendChild(clone);
+
+            try {
+                // Ждём загрузки всех картинок внутри клона
+                const imgs = Array.from(clone.querySelectorAll('img'));
+                await Promise.all(imgs.map(img => {
+                    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+                    return new Promise(resolve => {
+                        img.onload = img.onerror = resolve;
+                    });
+                }));
+
+                // Двойной rAF — гарантия, что браузер применил стили и фоны
+                await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+                const canvas = await html2canvas(clone, {
                     useCORS: true,
                     scale: 2,
                     backgroundColor: null,
                     width: 700,
-                    height: 700
+                    height: 700,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 700,
+                    windowHeight: 700
                 });
-
-                container.style.transform = originalTransform;
 
                 const a = document.createElement('a');
                 a.download = 'duel-card.png';
@@ -371,6 +396,8 @@
                 a.click();
             } catch (e) {
                 alert("Ошибка при скачивании: " + e.message);
+            } finally {
+                clone.remove();
             }
         };
 
