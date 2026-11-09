@@ -177,6 +177,8 @@
         .secondary-btn { background: #e5e5ea; color: #1a2b3c; }
         .primary-btn:active,
         .secondary-btn:active { transform: scale(0.98); }
+        .secondary-btn:disabled,
+        .primary-btn:disabled { opacity: 0.6; cursor: wait; }
 
         /* --- СТАТУС --- */
         .status {
@@ -600,7 +602,6 @@
             const player = nick ? state.players.get(nick.toLowerCase()) : null;
 
             if (player && player.photo) {
-                // background-image вместо <img> — html2canvas рендерит корректно
                 photoEl.style.backgroundImage = `url("${player.photo}")`;
                 photoEl.classList.add('visible');
                 nameEl.textContent = player.nick.toUpperCase();
@@ -764,9 +765,10 @@
             updateTitles();
         };
 
-        // --- РЕНДЕР В КЛОН ---
-        // Фото теперь рендерится как background-image (см. .player-photo в CSS),
-        // а html2canvas корректно отрисовывает background-size: cover.
+        // --- РЕНДЕР В КЛОН (МАКСИМАЛЬНОЕ КАЧЕСТВО) ---
+        // 700 * 4 = 2800x2800 px. Для печати/4K можно поднять до 6, но на iOS Safari может упасть (лимит ~16.7 Мп).
+        const RENDER_SCALE = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 3 : 4;
+
         async function renderToCanvas() {
             const container = document.getElementById('cardContainer');
 
@@ -783,17 +785,24 @@
             document.body.appendChild(clone);
 
             try {
-                // Ждём загрузки всех img (логотипы турнира, команды) и фоновых фото
+                // 1) Ждём загрузки и декодирования всех <img>
                 const imgs = Array.from(clone.querySelectorAll('img'));
                 await Promise.all(imgs.map(img => {
-                    if (!img.getAttribute('src')) return Promise.resolve();
-                    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+                    const src = img.getAttribute('src');
+                    if (!src) return Promise.resolve();
+                    if (img.complete && img.naturalWidth > 0) {
+                        return img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+                    }
                     return new Promise(resolve => {
-                        img.onload = img.onerror = resolve;
+                        img.onload = () => {
+                            if (img.decode) img.decode().then(resolve).catch(resolve);
+                            else resolve();
+                        };
+                        img.onerror = resolve;
                     });
                 }));
 
-                // Ждём загрузки фоновых картинок (фото игроков)
+                // 2) Ждём загрузки и декодирования фоновых картинок (фото игроков)
                 const bgEls = Array.from(clone.querySelectorAll('.player-photo'));
                 await Promise.all(bgEls.map(el => {
                     const bg = el.style.backgroundImage;
@@ -803,47 +812,76 @@
                     return new Promise(resolve => {
                         const im = new Image();
                         im.crossOrigin = 'anonymous';
-                        im.onload = im.onerror = () => resolve();
+                        im.onload = () => {
+                            if (im.decode) im.decode().then(resolve).catch(resolve);
+                            else resolve();
+                        };
+                        im.onerror = resolve;
                         im.src = m[1];
                     });
                 }));
 
+                // 3) Двойной rAF — чтобы стили применились
                 await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
+                // 4) Рендер с максимальным scale
                 return await html2canvas(clone, {
                     useCORS: true,
-                    scale: 2,
+                    allowTaint: false,
+                    scale: RENDER_SCALE,
                     backgroundColor: null,
                     width: 700,
                     height: 700,
                     scrollX: 0,
                     scrollY: 0,
                     windowWidth: 700,
-                    windowHeight: 700
+                    windowHeight: 700,
+                    imageTimeout: 30000,
+                    logging: false,
+                    removeContainer: true
                 });
             } finally {
                 clone.remove();
             }
         }
 
-        // --- СКАЧИВАНИЕ ---
+        // --- СКАЧИВАНИЕ (через Blob — быстрее и надёжнее для больших файлов) ---
         document.getElementById('downloadBtn').onclick = async () => {
+            const btn = document.getElementById('downloadBtn');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Готовим...";
             try {
                 const canvas = await renderToCanvas();
+                const blob = await new Promise(res => canvas.toBlob(res, "image/png", 1.0));
+                if (!blob) throw new Error("Не удалось создать PNG");
+
+                const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.download = 'duel-card.png';
-                a.href = canvas.toDataURL('image/png');
+                a.download = `duel-card-${Date.now()}.png`;
+                a.href = url;
                 a.click();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+                UI.status(`Готово: ${canvas.width}×${canvas.height} px, ${(blob.size / 1024 / 1024).toFixed(2)} МБ`, "success");
             } catch (e) {
                 UI.status("Ошибка при скачивании: " + e.message, "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
             }
         };
 
         // --- ПОДЕЛИТЬСЯ ---
         document.getElementById('shareBtn').onclick = async () => {
+            const btn = document.getElementById('shareBtn');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Готовим...";
             try {
                 const canvas = await renderToCanvas();
-                const blob = await new Promise(res => canvas.toBlob(res, "image/png"));
+                const blob = await new Promise(res => canvas.toBlob(res, "image/png", 1.0));
+                if (!blob) throw new Error("Не удалось создать PNG");
                 const file = new File([blob], "duel-card.png", { type: "image/png" });
 
                 if (!(navigator.canShare && navigator.canShare({ files: [file] }))) {
@@ -862,6 +900,9 @@
                         : "Ошибка при попытке поделиться: " + e.message,
                     "error"
                 );
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
             }
         };
 
