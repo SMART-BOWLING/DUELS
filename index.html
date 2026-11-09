@@ -11,16 +11,8 @@
 
     <style>
         /* --- БАЗА --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-size: 16px;
-        }
-        html {
-            color-scheme: light;
-            width: 100%;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-size: 16px; }
+        html { color-scheme: light; width: 100%; }
         body {
             margin: 0;
             background: #f2f2f7;
@@ -32,412 +24,197 @@
         }
 
         /* --- ВКЛАДКИ --- */
-        .tabs {
-            display: flex;
-            gap: 6px;
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto 16px;
-            padding: 0;
-            overflow-x: auto;
-        }
+        .tabs { display: flex; gap: 6px; width: 100%; max-width: 1100px; margin: 0 auto 16px; padding: 0; overflow-x: auto; }
         .tabs button {
-            flex: 1 1 0;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 10px;
-            background: #e5e5ea;
-            color: #1a2b3c;
-            font: inherit;
-            font-size: 15px;
-            font-weight: 600;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: background 0.2s;
+            flex: 1 1 0; padding: 10px 16px; border: none; border-radius: 10px;
+            background: #e5e5ea; color: #1a2b3c; font: inherit; font-size: 15px;
+            font-weight: 600; white-space: nowrap; cursor: pointer; transition: background 0.2s;
         }
-        .tabs button.active {
-            background: #1a2b3c;
-            color: #fff;
-        }
+        .tabs button.active { background: #1a2b3c; color: #fff; }
 
         /* --- КОНТЕЙНЕР И ПАНЕЛЬ УПРАВЛЕНИЯ --- */
-        .app-container {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 1100px;
-            align-items: center;
-            gap: 24px;
-        }
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 521px;
-            min-width: 0;
-            width: 100%;
-        }
+        .app-container { display: flex; flex-direction: column; width: 100%; max-width: 1100px; align-items: center; gap: 24px; }
+        .controls { display: flex; flex-direction: column; gap: 10px; max-width: 521px; min-width: 0; width: 100%; }
         .row-label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #ffffff;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #1c1c1e;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-            gap: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: #ffffff; padding: 12px 16px; border-radius: 12px;
+            font-size: 16px; font-weight: 500; color: #1c1c1e;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02); gap: 12px;
         }
         .col-label {
-            display: flex;
-            flex-direction: column;
-            background: #ffffff;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #1c1c1e;
-            gap: 8px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            display: flex; flex-direction: column; background: #ffffff; padding: 12px 16px;
+            border-radius: 12px; font-size: 16px; font-weight: 500; color: #1c1c1e;
+            gap: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         }
         .controls span { white-space: nowrap; }
-        .controls input,
-        .controls select,
-        .controls textarea {
-            padding: 8px 12px;
-            font-family: inherit;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            background: #f2f2f7;
-            color: #1c1c1e;
-            outline: none;
-            transition: background 0.2s;
+        .controls input, .controls select, .controls textarea {
+            padding: 8px 12px; font-family: inherit; font-size: 16px; border-radius: 8px;
+            border: none; background: #f2f2f7; color: #1c1c1e; outline: none; transition: background 0.2s;
         }
-        .controls input:focus,
-        .controls select:focus,
-        .controls textarea:focus { background: #e5e5ea; }
-        .row-label select,
-        .row-label input {
-            text-align: right;
-            max-width: 160px;
-            min-width: 0;
-        }
-        .controls details summary {
-            cursor: pointer;
-            font-weight: 500;
-        }
+        .controls input:focus, .controls select:focus, .controls textarea:focus { background: #e5e5ea; }
+        .row-label select, .row-label input { text-align: right; max-width: 160px; min-width: 0; }
+        .controls details summary { cursor: pointer; font-weight: 500; }
 
-        /* Цветовые инпуты */
         .controls input[type=color] {
-            width: 44px;
-            height: 36px;
-            padding: 2px;
-            cursor: pointer;
-            flex-shrink: 0;
-            border-radius: 8px;
-            background: #f2f2f7;
+            width: 44px; height: 36px; padding: 2px; cursor: pointer; flex-shrink: 0;
+            border-radius: 8px; background: #f2f2f7;
         }
-        .color-row {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .color-row label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #1c1c1e;
-            font-weight: 500;
-        }
+        .color-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .color-row label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #1c1c1e; font-weight: 500; }
 
         /* --- КНОПКИ --- */
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-top: 8px;
-        }
+        .action-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
         .btn-group { display: flex; gap: 8px; }
-        .primary-btn,
-        .secondary-btn {
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            border-radius: 12px;
-            transition: opacity 0.2s ease, transform 0.1s ease;
-            width: 100%;
+        .primary-btn, .secondary-btn {
+            padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer;
+            border: none; border-radius: 12px; transition: opacity 0.2s ease, transform 0.1s ease; width: 100%;
         }
         .primary-btn { background: #1a2b3c; color: #ffffff; }
         .secondary-btn { background: #e5e5ea; color: #1a2b3c; }
-        .primary-btn:active,
-        .secondary-btn:active { transform: scale(0.98); }
-        .secondary-btn:disabled,
-        .primary-btn:disabled { opacity: 0.6; cursor: wait; }
+        .primary-btn:active, .secondary-btn:active { transform: scale(0.98); }
+        .secondary-btn:disabled, .primary-btn:disabled { opacity: 0.6; cursor: wait; }
 
         /* --- СТАТУС --- */
         .status {
-            max-width: 500px;
-            margin: 10px auto;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 14px;
-            text-align: center;
-            display: none;
+            max-width: 500px; margin: 10px auto; padding: 10px; border-radius: 6px;
+            font-size: 14px; text-align: center; display: none;
         }
         .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .status.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .status.info    { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
 
-        /* --- ПРЕВЬЮ (резиновое) --- */
+        /* --- ПРЕВЬЮ --- */
         .preview {
-            position: relative;
-            width: 100%;
-            max-width: 521px;
-            aspect-ratio: 1 / 1;
-            flex-shrink: 0;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 12px;
-            background: #2c3e50;
-            order: -1;
+            position: relative; width: 100%; max-width: 521px; aspect-ratio: 1 / 1;
+            flex-shrink: 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px; background: #2c3e50; order: -1;
         }
         @media (min-width: 1100px) {
-            .app-container {
-                flex-direction: row;
-                align-items: flex-start;
-                justify-content: center;
-                gap: 40px;
-            }
-            .preview {
-                order: 0;
-                position: sticky;
-                top: 16px;
-            }
+            .app-container { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; }
+            .preview { order: 0; position: sticky; top: 16px; }
         }
         @media (max-width: 600px) {
             body { padding: 12px 10px; }
-            .row-label,
-            .col-label { padding: 10px 12px; }
+            .row-label, .col-label { padding: 10px 12px; }
         }
 
-        /* --- КАРТОЧКА (в стиле генераторов CSPORTS) --- */
+        /* --- КАРТОЧКА --- */
         .board {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 1000px;
-            height: 1000px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            padding: 0;
-            box-sizing: border-box;
-            transform-origin: 0 0;
-            transform: scale(var(--k, 0.521));
-            overflow: hidden;
-            color: #fff;
+            position: absolute; top: 0; left: 0; width: 1000px; height: 1000px;
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            padding: 0; box-sizing: border-box; transform-origin: 0 0;
+            transform: scale(var(--k, 0.521)); overflow: hidden; color: #fff;
             --font-heading: "Oswald", "Arial Narrow", Impact, sans-serif;
             --font-number: "Anton", Impact, sans-serif;
             --font-stat: "Archivo Black", "Arial Black", Arial, sans-serif;
             --font-label: "Montserrat", Arial, sans-serif;
         }
-        .board.plain-bg {
-            background-image:
-                linear-gradient(135deg, #3a4044, #1f2327);
-        }
+        .board.plain-bg { background-image: linear-gradient(135deg, #3a4044, #1f2327); }
 
-        /* === ШАПКА: как в генераторе матчей === */
-        /* Логотип турнира (квадрат 129x129), рендерим через background-image */
         .tl {
-            position: absolute;
-            left: 39px;
-            top: 24px;
-            width: 129px;
-            height: 129px;
-            border-radius: 14px;
-            overflow: hidden;
-            z-index: 10;
-            background-color: #dc143c;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 90%;
+            position: absolute; left: 39px; top: 24px; width: 129px; height: 129px;
+            border-radius: 14px; overflow: hidden; z-index: 10; background-color: #dc143c;
+            background-repeat: no-repeat; background-position: center; background-size: 90%;
         }
 
-        /* Подложки названия турнира */
         .plate {
-            position: absolute;
-            left: 192px;
-            height: 56px;
-            max-width: 770px;
-            padding: 0 12px 0 13px;
-            background: #e4e8ee;
-            border-radius: 10px;
-            font-family: var(--font-label);
-            font-weight: 700;
-            font-size: 46.2px;
-            line-height: 58px;
-            white-space: nowrap;
-            color: #000;
-            text-transform: uppercase;
-            overflow: hidden;
-            z-index: 10;
+            position: absolute; left: 192px; height: 56px; max-width: 770px;
+            padding: 0 12px 0 13px; background: #e4e8ee; border-radius: 10px;
+            font-family: var(--font-label); font-weight: 700; font-size: 46.2px;
+            line-height: 58px; white-space: nowrap; color: #000;
+            text-transform: uppercase; overflow: hidden; z-index: 10;
         }
-        /* Позиции как в match: верх = 24, низ = 97 */
         .plate.top    { top: 24px; }
         .plate.bottom { top: 97px; }
 
-        /* Карточки игроков (2 колонки) — чуть ниже */
         .players-grid {
-            position: absolute;
-            left: 40px;
-            top: 200px;
-            width: 920px;
-            height: 670px;
-            display: flex;
-            gap: 20px;
-            z-index: 5;
+            position: absolute; left: 40px; top: 200px; width: 920px; height: 670px;
+            display: flex; gap: 20px; z-index: 5;
         }
         .player-card {
-            flex: 1;
-            position: relative;
-            border-radius: 16px;
-            overflow: visible;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            display: flex;
-            flex-direction: column;
+            flex: 1; position: relative; border-radius: 16px; overflow: visible;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4); display: flex; flex-direction: column;
         }
         .player-card.yellow {
-            background: linear-gradient(
-                180deg,
-                var(--yellow-top, #fce83a) 0%,
-                var(--yellow-bottom, #fdf7d5) 100%
-            );
+            background: linear-gradient(180deg, var(--yellow-top, #fce83a) 0%, var(--yellow-bottom, #fdf7d5) 100%);
         }
         .player-card.red {
-            background: linear-gradient(
-                180deg,
-                var(--red-top, #e45656) 0%,
-                var(--red-bottom, #f7bebe) 100%
-            );
+            background: linear-gradient(180deg, var(--red-top, #e45656) 0%, var(--red-bottom, #f7bebe) 100%);
         }
-        .card-top {
-            flex: 1;
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            border-radius: 16px 16px 0 0;
-        }
+        .card-top { flex: 1; position: relative; width: 100%; overflow: hidden; border-radius: 16px 16px 0 0; }
+
+        /* Фото игрока */
         .player-photo {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center 20%;
-            background-repeat: no-repeat;
-            z-index: 2;
-            display: none;
-            transform: scale(1.25);
-            transform-origin: top center;
+            position: absolute; inset: 0; background-size: cover;
+            background-position: center 20%; background-repeat: no-repeat;
+            z-index: 2; display: none;
+            transform: scale(1.25); transform-origin: top center;
         }
         .player-photo.visible { display: block; }
-        .rank-number {
+
+        /* === ЛОГО КОМАНДЫ — с противоположной стороны от счёта, с белой подложкой === */
+        .team-logo {
             position: absolute;
-            top: 10px;
-            right: 20px;
-            font-family: var(--font-number);
-            font-size: 120px;
-            font-weight: 900;
-            color: white;
-            z-index: 5;
-            line-height: 1;
+            top: 14px;
+            width: 70px;
+            height: 70px;
+            z-index: 8;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            display: none;
+            pointer-events: none;
+        }
+        .team-logo.visible { display: block; }
+        .team-logo.left  { left: 16px; }
+        .team-logo.right { right: 16px; }
+
+        .rank-number {
+            position: absolute; top: 10px; right: 20px; font-family: var(--font-number);
+            font-size: 120px; font-weight: 900; color: white; z-index: 5; line-height: 1;
             text-shadow: 0px 2px 5px rgba(0,0,0,0.2);
         }
         .rank-number.left { right: auto; left: 20px; }
         .rank-number:empty { display: none; }
+
         .player-name-box {
-            background: #d9d9d9;
-            height: 95px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            border-radius: 0 0 16px 16px;
-            z-index: 3;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-            position: relative;
-            top: 0;
+            background: #d9d9d9; height: 95px; display: flex; align-items: center;
+            justify-content: center; width: 100%; border-radius: 0 0 16px 16px;
+            z-index: 3; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); position: relative; top: 0;
         }
         .player-name-box span {
-            color: black;
-            font-family: var(--font-heading);
-            font-size: 42px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: black; font-family: var(--font-heading); font-size: 42px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            padding: 0 10px; text-align: center; overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap; max-width: 100%;
         }
 
-        /* Футер — чуть выше */
-        .footer2 {
-            position: absolute;
-            left: 0;
-            top: 930px;
-            width: 1000px;
-            height: 44px;
-            z-index: 10;
-        }
-        .footer2 .fp {
-            position: absolute;
-            top: 0;
-            height: 43px;
-            border-radius: 9px;
-        }
+        .footer2 { position: absolute; left: 0; top: 930px; width: 1000px; height: 44px; z-index: 10; }
+        .footer2 .fp { position: absolute; top: 0; height: 43px; border-radius: 9px; }
         .footer2 .fp.brand {
-            left: 39px;
-            width: 132px;
+            left: 39px; width: 132px;
             background: #dc143c url(data:image/png;base64,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) center / 118px 36px no-repeat;
         }
         .footer2 .fp.insta {
-            left: 179px;
-            top: 1px;
-            width: 42px;
-            height: 42px;
+            left: 179px; top: 1px; width: 42px; height: 42px;
             background: #9a5cf8 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAALNSURBVHicrZfLS1VRFMZ/93pNKykwwQwxiqsQ1KRBUT4QogdW/0MTnUQQQQ0i0B6DiggCoccgImjULFAhByGlERVUUJZBUiqRDXrg61rwNdjr6uF09rnnlh9s1jl7r/N9a++91j7npCSRAGuBPUAjsAmoBVYAM8A4MAwMAfeBzwXZJMW1rKRbknJKhpyk25Ia4njjBDsTCvnQVYxoSlLffwrm0S+ptJBoiaTnSySYxytJZUGddGiL+4CtSTKrCGyxBFtASovZexjojnn4NfATiEr3FLAGaIh5/jhwCVhY3uqY5bke3pOYVimpN4arVhIZi+KUJ7pu4AiuRg/ZbAjNNgVUmO0A2oAHQGsEXyfQjqSMpKmIqGYt+rYEyTIn6aakGUn1klZ6/HKSypG01+PQa6Ijof4fkq5IOibpjvX1mO+QpGd2PeHhPZgBWjxL+8VsRaDvEdAc8jtry/kQ2AY8tv6vwLoI3uY0kPWIlpqdNfvDBOuAEWAeGADe4s7kJqAEmDT/DNHYmAY2eAZTofuLZt8B9RZUC662PwA9BcTyyKaBqgJOefEBIywPje8zO1SAJ4+qNDBWwClfHq3Ab2AuNN5ndmdC0dE08DGh8wncrLO402kG6MfV5Xpgv/mFt+Uv0QzwxjM4b3a52VW4DG0CNgf86ljMWHAvd4BfHt7htEUbhUqzU4G+RmAauAGcBO7iVqom4DNh1pcr/fkzcyyiiL/b2AFPkftQJ2mZZ2xcgbP3srUgVuPO5HO4/ToKVHuiFzAKdAGfgHseP6dhs8lImvREd0bJ3zLIfVNFYVL2FRF8n7bgajEK08BT4JvdBzNUdl8N7PA8D67kBoIzzbfzRexdMbgQ1IlanqtLLHgtrOHbl64lEjwdxR+XELslvfhHsZeSdvm4k2Rju6TBhGKDkjoKcQaztxDqge24f5kaoAzI4f5dhoEnwPskRH8AZ0MT30dYLz8AAAAASUVORK5CYII=) center / 30px 30px no-repeat;
         }
         .footer2 .fp.tg {
-            left: 229px;
-            top: 1px;
-            width: 42px;
-            height: 42px;
+            left: 229px; top: 1px; width: 42px; height: 42px;
             background: #2e88f7 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAAJgSURBVHicvZdfaE5xGMc/exulFAup1YxiUthIu2CF/Lvg0t9IuRE3EheS3KjVbrQbF25QuHJBSQ3ztzWKks3mSnKzGmq1bI3UPi7OOTm93vec37u9863T2+88z3k+v+c8zznneWtUAtUCbAdagRXAYmAWMA4MAYNAL/AIGA6KqOYd+9XnhmtCva625MXOMraoLyqAllKnWlMp/Pg0oWkNqitD4eerCE40oa7Ngx+eAXCiH+r8NK/Gv93eCHwJbf0p6hWwKVkUUoa7MwwG2AgcTRZJ5ruAh/8BDjAGzAMmk8zbqxj8DXAMOFXGPhc4AYC6tArNNKxeVhtTDbUow79fpRbYO40su4GbwO143QTUAAL7Mq5bAywrEDVBJfpEVKZVwM4Y3AD0ALuB2bHfhpw4bagDAbf1l3pH3eO/L6WLsc/povN5cS+hfs1weKueVetLQJvUvthva5FtQUBCV1FHyhjPlAAmx4WU35IS9h0B8Gu1RN/juhI1OQIsB54RNdYo0AZcAZrj2q8jem6LtT6gd8ZRXwfsckTtSa2fZNwV1HsBMc8VgI8Bu6yLswYYIJpostQaELO/ADwOcEyrL8feANTn+PwGegrAfWCyAvho/HsI6ChhD8m6CxhLanQjoEaJDhpNJom61IWpencExNhiaphoqAD+Tv1ZdO67ui2O1Ztz/Ydko+kO7axgA+X0PsCnuRQc9XMVNpCl9jSvGN5gNOzNhB4UsUpOr6vVbzMNLgdHXax2VwncUYaR+3fppDo0RehLdXNW/PToXE5ziGayA0QflEKG7wTwFLgVv0gy9Qe+yTNsCpGjpQAAAABJRU5ErkJggg==) center / 30px 30px no-repeat;
         }
         .footer2 .fp.handle {
-            left: 278px;
-            width: 203px;
-            background: #e4e8ee;
-            color: #000;
-            font-family: var(--font-label);
-            font-weight: 600;
-            font-size: 16.5px;
-            line-height: 43px;
-            letter-spacing: 0.07em;
-            padding-left: 7px;
-            white-space: nowrap;
+            left: 278px; width: 203px; background: #e4e8ee; color: #000;
+            font-family: var(--font-label); font-weight: 600; font-size: 16.5px;
+            line-height: 43px; letter-spacing: 0.07em; padding-left: 7px; white-space: nowrap;
         }
         .footer2 .fp.mappill {
-            right: 40px;
-            padding: 0 11px 0 14px;
-            background: #9a5cf8;
-            color: #e4e8ee;
-            font-family: var(--font-label);
-            font-weight: 700;
-            font-size: 25px;
-            line-height: 43px;
-            white-space: nowrap;
+            right: 40px; padding: 0 11px 0 14px; background: #9a5cf8; color: #e4e8ee;
+            font-family: var(--font-label); font-weight: 700; font-size: 25px;
+            line-height: 43px; white-space: nowrap;
         }
     </style>
 </head>
@@ -450,20 +227,15 @@
     </nav>
 
     <div class="app-container">
-        <!-- Панель управления -->
         <div class="controls">
             <details class="col-label" open>
                 <summary>Градиент карточек игроков</summary>
-                <div class="color-row">
-                    <label>Левый (жёлтый):</label>
-                </div>
+                <div class="color-row"><label>Левый (жёлтый):</label></div>
                 <div class="color-row">
                     <label>Верх <input type="color" id="yellowTop" value="#fce83a" /></label>
                     <label>Низ <input type="color" id="yellowBottom" value="#fdf7d5" /></label>
                 </div>
-                <div class="color-row">
-                    <label>Правый (красный):</label>
-                </div>
+                <div class="color-row"><label>Правый (красный):</label></div>
                 <div class="color-row">
                     <label>Верх <input type="color" id="redTop" value="#e45656" /></label>
                     <label>Низ <input type="color" id="redBottom" value="#f7bebe" /></label>
@@ -499,11 +271,20 @@
                 </div>
             </div>
 
+            <div class="col-label">
+                <span>Левая команда (поиск из TEAMS):</span>
+                <input type="text" id="teamLeft" list="teamListLeft" placeholder="начните вводить название..." autocomplete="off" style="width: 100%; text-align: left;" />
+                <datalist id="teamListLeft"></datalist>
+            </div>
+            <div class="col-label">
+                <span>Правая команда (поиск из TEAMS):</span>
+                <input type="text" id="teamRight" list="teamListRight" placeholder="начните вводить название..." autocomplete="off" style="width: 100%; text-align: left;" />
+                <datalist id="teamListRight"></datalist>
+            </div>
+
             <label class="row-label">
                 <span>Карта:</span>
-                <select id="map">
-                    <option value="">Загрузка...</option>
-                </select>
+                <select id="map"><option value="">Загрузка...</option></select>
             </label>
 
             <div class="action-buttons">
@@ -514,21 +295,18 @@
             </div>
         </div>
 
-        <!-- Превью карточки -->
         <div class="preview" id="preview">
             <div class="board" id="board">
-                <!-- Логотип турнира: фон на .tl, без <img> -->
                 <div class="tl" id="tournamentLogo"></div>
 
-                <!-- Две подложки названия, позиции как в match -->
                 <div class="plate top" id="titleTopLine">ДУЭЛІ НА PGL MAJOR</div>
                 <div class="plate bottom" id="titleBottomLine">SINGAPORE SAGE 1</div>
 
-                <!-- Карточки игроков -->
                 <div class="players-grid">
                     <div class="player-card yellow" id="cardYellow">
                         <div class="card-top">
                             <div class="rank-number" id="rankLeft"></div>
+                            <div class="team-logo left" id="teamLogoLeft"></div>
                             <div class="player-photo" id="photoLeft"></div>
                         </div>
                         <div class="player-name-box"><span id="nameLeft"></span></div>
@@ -537,13 +315,13 @@
                     <div class="player-card red" id="cardRed">
                         <div class="card-top">
                             <div class="rank-number left" id="rankRight"></div>
+                            <div class="team-logo right" id="teamLogoRight"></div>
                             <div class="player-photo" id="photoRight"></div>
                         </div>
                         <div class="player-name-box"><span id="nameRight"></span></div>
                     </div>
                 </div>
 
-                <!-- Футер в стиле CSPORTS -->
                 <div class="footer2">
                     <div class="fp brand"></div>
                     <div class="fp insta"></div>
@@ -556,7 +334,6 @@
     </div>
 
     <script>
-        // --- UI ---
         const UI = {
             status(msg, type = "info") {
                 const el = document.getElementById("statusMessage");
@@ -568,7 +345,6 @@
             }
         };
 
-        // --- МАСШТАБ ПРЕВЬЮ ---
         function fitPreview() {
             const preview = document.getElementById('preview');
             const board = document.getElementById('board');
@@ -583,7 +359,6 @@
         }
         window.addEventListener('load', fitPreview);
 
-        // --- ВКЛАДКИ ---
         document.querySelectorAll('.tabs button').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tabs button').forEach(t => t.classList.remove('active'));
@@ -591,22 +366,14 @@
             });
         });
 
-        // --- ЦВЕТА КАРТ ---
         const MAP_COLORS = {
-            INFERNO: "#2f72d6",
-            OVERPASS: "#f27a14",
-            DUST2: "#d9c41a",
-            MIRAGE: "#8a4fd6",
-            ANUBIS: "#c42d78",
-            ANCIENT: "#1f9a80",
-            NUKE: "#d6453a",
-            TRAIN: "#6bb544",
-            CACHE: "#4cb4d6"
+            INFERNO: "#2f72d6", OVERPASS: "#f27a14", DUST2: "#d9c41a",
+            MIRAGE: "#8a4fd6", ANUBIS: "#c42d78", ANCIENT: "#1f9a80",
+            NUKE: "#d6453a", TRAIN: "#6bb544", CACHE: "#4cb4d6"
         };
         const mapColor = name =>
             MAP_COLORS[String(name).toUpperCase().replace(/[^A-Z0-9]/g, "")] || "#9a5cf8";
 
-        // --- API ---
         const API_URL = "https://script.google.com/macros/s/AKfycbxJZEfppSo6QZpmpiEDR1FaOpIjHdfQDXdj-x80uoIy-SU30nKgIgfvr3DNgQbroi53/exec";
         const SHEET_ID = "188jMHUJs1KkmCAzG7XZYTnTY9SnNIx0JlXJoEdMTees";
 
@@ -620,11 +387,11 @@
             return json.data;
         }
 
-        // --- СОСТОЯНИЕ ---
         const state = {
             logosRows: [],
             maps: [],
-            players: new Map()
+            players: new Map(),
+            teams: new Map()
         };
 
         const pref = {
@@ -635,19 +402,15 @@
                 } catch (e) { return fallback; }
             },
             set(key, value) {
-                try {
-                    localStorage.setItem("csports:duel:" + key, value);
-                } catch (e) {}
+                try { localStorage.setItem("csports:duel:" + key, value); } catch (e) {}
             }
         };
 
         const TITLE_PREFIX = "ДУЭЛІ НА";
 
         const DEFAULT_GRADIENT = {
-            yellowTop: "#fce83a",
-            yellowBottom: "#fdf7d5",
-            redTop: "#e45656",
-            redBottom: "#f7bebe"
+            yellowTop: "#fce83a", yellowBottom: "#fdf7d5",
+            redTop: "#e45656", redBottom: "#f7bebe"
         };
 
         function defaultTopFor(tournamentName) {
@@ -655,21 +418,14 @@
             return name ? `${TITLE_PREFIX} ${name}` : TITLE_PREFIX;
         }
 
-        // --- ГРАДИЕНТЫ ---
         const gradKey = (name, part) => `gradient:${name}:${part}`;
 
         function loadGradient() {
             const name = document.getElementById('tournament').value;
-            const top = pref.get(gradKey(name, "yellowTop"), DEFAULT_GRADIENT.yellowTop);
-            const bottom = pref.get(gradKey(name, "yellowBottom"), DEFAULT_GRADIENT.yellowBottom);
-            const rTop = pref.get(gradKey(name, "redTop"), DEFAULT_GRADIENT.redTop);
-            const rBottom = pref.get(gradKey(name, "redBottom"), DEFAULT_GRADIENT.redBottom);
-
-            document.getElementById('yellowTop').value = top;
-            document.getElementById('yellowBottom').value = bottom;
-            document.getElementById('redTop').value = rTop;
-            document.getElementById('redBottom').value = rBottom;
-
+            document.getElementById('yellowTop').value = pref.get(gradKey(name, "yellowTop"), DEFAULT_GRADIENT.yellowTop);
+            document.getElementById('yellowBottom').value = pref.get(gradKey(name, "yellowBottom"), DEFAULT_GRADIENT.yellowBottom);
+            document.getElementById('redTop').value = pref.get(gradKey(name, "redTop"), DEFAULT_GRADIENT.redTop);
+            document.getElementById('redBottom').value = pref.get(gradKey(name, "redBottom"), DEFAULT_GRADIENT.redBottom);
             applyGradient();
         }
 
@@ -678,11 +434,8 @@
             const yb = document.getElementById('yellowBottom').value;
             const rt = document.getElementById('redTop').value;
             const rb = document.getElementById('redBottom').value;
-
-            document.getElementById('cardYellow').style.background =
-                `linear-gradient(180deg, ${yt} 0%, ${yb} 100%)`;
-            document.getElementById('cardRed').style.background =
-                `linear-gradient(180deg, ${rt} 0%, ${rb} 100%)`;
+            document.getElementById('cardYellow').style.background = `linear-gradient(180deg, ${yt} 0%, ${yb} 100%)`;
+            document.getElementById('cardRed').style.background = `linear-gradient(180deg, ${rt} 0%, ${rb} 100%)`;
         }
 
         function saveGradient() {
@@ -700,7 +453,6 @@
             });
         });
 
-        // --- НИКИ И СЧЁТ ---
         async function loadPlayers() {
             try {
                 const data = await fetchSheet("PLAYERS");
@@ -708,9 +460,7 @@
                 data.slice(1).forEach(row => {
                     const nick = row[0] ? String(row[0]).trim() : "";
                     const photo = row[1] ? String(row[1]).trim() : "";
-                    if (nick) {
-                        state.players.set(nick.toLowerCase(), { nick, photo });
-                    }
+                    if (nick) state.players.set(nick.toLowerCase(), { nick, photo });
                 });
                 applyNicksAndScores();
             } catch (e) {
@@ -778,7 +528,85 @@
             });
         });
 
-        // --- ЗАГРУЗКА КАРТ ---
+        async function loadTeams() {
+            try {
+                const data = await fetchSheet("TEAMS");
+                state.teams.clear();
+                data.slice(1).forEach(row => {
+                    const name = row[0] ? String(row[0]).trim() : "";
+                    const logo = row[4] ? String(row[4]).trim() : "";
+                    if (name) state.teams.set(name.toLowerCase(), { name, logo });
+                });
+                fillTeamDatalists();
+                bindTeamInputs();
+            } catch (e) {
+                console.error("Ошибка загрузки TEAMS:", e);
+                UI.status("Ошибка загрузки команд: " + e.message, "error");
+            }
+        }
+
+        function fillTeamDatalists() {
+            const names = Array.from(state.teams.values())
+                .map(t => t.name)
+                .sort((a, b) => a.localeCompare(b));
+            const html = names.map(n => `<option value="${n.replace(/"/g, '&quot;')}"></option>`).join('');
+            document.getElementById('teamListLeft').innerHTML = html;
+            document.getElementById('teamListRight').innerHTML = html;
+        }
+
+        function bindTeamInputs() {
+            ['teamLeft', 'teamRight'].forEach(id => {
+                const side = id === 'teamLeft' ? 'left' : 'right';
+                const input = document.getElementById(id);
+
+                input.addEventListener('input', () => {
+                    const name = document.getElementById('tournament').value;
+                    pref.set(`team:${name}:${side}`, input.value);
+                    applyTeam(side);
+                });
+
+                input.addEventListener('change', () => {
+                    const name = document.getElementById('tournament').value;
+                    pref.set(`team:${name}:${side}`, input.value);
+                    applyTeam(side);
+                });
+            });
+        }
+
+        function applyTeam(side) {
+            const inputId = side === 'left' ? 'teamLeft' : 'teamRight';
+            const logoId  = side === 'left' ? 'teamLogoLeft' : 'teamLogoRight';
+
+            const value = document.getElementById(inputId).value.trim();
+            const logoEl = document.getElementById(logoId);
+
+            if (!value) {
+                logoEl.style.backgroundImage = '';
+                logoEl.classList.remove('visible');
+                return;
+            }
+
+            const team = state.teams.get(value.toLowerCase());
+            if (team && team.logo) {
+                logoEl.style.backgroundImage = `url("${team.logo}")`;
+                logoEl.classList.add('visible');
+            } else {
+                logoEl.style.backgroundImage = '';
+                logoEl.classList.remove('visible');
+                if (team && !team.logo) {
+                    UI.status(`У команды «${team.name}» нет логотипа в колонке E`, "info");
+                }
+            }
+        }
+
+        function restoreTeams() {
+            const name = document.getElementById('tournament').value;
+            document.getElementById('teamLeft').value  = pref.get(`team:${name}:left`, "");
+            document.getElementById('teamRight').value = pref.get(`team:${name}:right`, "");
+            applyTeam('left');
+            applyTeam('right');
+        }
+
         async function loadMaps() {
             try {
                 const data = await fetchSheet("MAPS");
@@ -818,7 +646,6 @@
             badge.style.background = mapColor(mapData.name);
         }
 
-        // --- ЗАГРУЗКА ТУРНИРОВ (LOGOS) ---
         async function loadLogos() {
             try {
                 const data = await fetchSheet("LOGOS");
@@ -858,16 +685,12 @@
             document.getElementById('titleTop').value = top;
             document.getElementById('titleBottom').value = bottom;
 
-            // Логотип: background-image на .tl, background-size: contain
             const logoEl = document.getElementById('tournamentLogo');
-            if (row.logo) {
-                logoEl.style.backgroundImage = `url("${row.logo}")`;
-            } else {
-                logoEl.style.backgroundImage = '';
-            }
+            logoEl.style.backgroundImage = row.logo ? `url("${row.logo}")` : '';
 
             loadGradient();
             applyNicksAndScores();
+            restoreTeams();
             updateTitles();
         }
 
@@ -901,7 +724,6 @@
             updateTitles();
         };
 
-        // --- РЕНДЕР В КЛОН (МАКСИМАЛЬНОЕ КАЧЕСТВО) ---
         const RENDER_SCALE = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 3 : 4;
 
         async function renderToCanvas() {
@@ -920,7 +742,6 @@
             document.body.appendChild(clone);
 
             try {
-                // 1) Ждём загрузки и декодирования всех <img>
                 const imgs = Array.from(clone.querySelectorAll('img'));
                 await Promise.all(imgs.map(img => {
                     const src = img.getAttribute('src');
@@ -937,9 +758,7 @@
                     });
                 }));
 
-                // 2) Ждём загрузки и декодирования фоновых картинок
-                //    (фото игроков + логотип турнира)
-                const bgEls = Array.from(clone.querySelectorAll('.player-photo, #tournamentLogo'));
+                const bgEls = Array.from(clone.querySelectorAll('.player-photo, .team-logo, #tournamentLogo'));
                 await Promise.all(bgEls.map(el => {
                     const bg = el.style.backgroundImage;
                     if (!bg || bg === 'none') return Promise.resolve();
@@ -957,10 +776,8 @@
                     });
                 }));
 
-                // 3) Двойной rAF — чтобы стили применились
                 await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
-                // 4) Рендер с максимальным scale
                 return await html2canvas(clone, {
                     useCORS: true,
                     allowTaint: false,
@@ -981,7 +798,6 @@
             }
         }
 
-        // --- СКАЧИВАНИЕ (через Blob — быстрее и надёжнее для больших файлов) ---
         document.getElementById('downloadBtn').onclick = async () => {
             const btn = document.getElementById('downloadBtn');
             const originalText = btn.textContent;
@@ -1008,7 +824,6 @@
             }
         };
 
-        // --- ПОДЕЛИТЬСЯ ---
         document.getElementById('shareBtn').onclick = async () => {
             const btn = document.getElementById('shareBtn');
             const originalText = btn.textContent;
@@ -1031,9 +846,7 @@
                 }
             } catch (e) {
                 UI.status(
-                    e.message.startsWith("Ваш")
-                        ? e.message
-                        : "Ошибка при попытке поделиться: " + e.message,
+                    e.message.startsWith("Ваш") ? e.message : "Ошибка при попытке поделиться: " + e.message,
                     "error"
                 );
             } finally {
@@ -1042,10 +855,10 @@
             }
         };
 
-        // --- ИНИЦИАЛИЗАЦИЯ ---
         loadMaps();
         loadLogos();
         loadPlayers();
+        loadTeams();
     </script>
 </body>
 </html>
