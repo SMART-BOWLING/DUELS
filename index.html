@@ -247,7 +247,16 @@
             width: 88px; height: 88px; background-color: #d11d32; border-radius: 12px;
             overflow: hidden; flex-shrink: 0; display: flex; justify-content: center; align-items: center;
         }
-        .pgl-logo-img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+        /* ИСПРАВЛЕНО: не object-fit:contain + 100%/100%, а max-width/max-height + auto.
+           html2canvas корректно сохраняет пропорции при таком подходе. */
+        .pgl-logo-img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: calc(100% - 12px);
+            max-height: calc(100% - 12px);
+            object-fit: contain;
+        }
         .title-lines { display: flex; flex-direction: column; align-items: flex-start; height: 85px; justify-content: space-between; }
         .title-line {
             background: #e4e8ee; color: black; padding: 6px 16px; border-radius: 6px;
