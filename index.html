@@ -192,12 +192,11 @@
         .status.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .status.info    { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
 
-        /* --- ПРЕВЬЮ --- */
+        /* --- ПРЕВЬЮ (резиновое) --- */
         .preview {
             position: relative;
             width: 100%;
             max-width: 521px;
-            height: auto;
             aspect-ratio: 1 / 1;
             flex-shrink: 0;
             overflow: hidden;
@@ -227,7 +226,9 @@
 
         /* --- КАРТОЧКА --- */
         .card-container {
-            position: relative;
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 700px;
             height: 700px;
             background-size: cover;
@@ -238,7 +239,8 @@
             display: flex;
             flex-direction: column;
             transform-origin: 0 0;
-            transform: scale(calc(521 / 700));
+            /* Масштаб ставит JS: --k = ширина превью / 700 */
+            transform: scale(var(--k, 1));
         }
 
         .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; z-index: 10; }
@@ -282,7 +284,6 @@
         }
         .player-photo.visible { display: block; }
 
-        /* Цифра счёта поверх фото */
         .rank-number {
             position: absolute; top: 10px; right: 20px; font-size: 85px; font-weight: 900;
             color: white; z-index: 5; line-height: 1; text-shadow: 0px 2px 5px rgba(0,0,0,0.2);
@@ -331,7 +332,6 @@
                 <input type="text" id="titleBottom" />
             </label>
 
-            <!-- НИКИ И СЧЁТ ИГРОКОВ -->
             <div class="col-label">
                 <span>Левый игрок (ник из PLAYERS):</span>
                 <div class="row-label" style="box-shadow: none; padding: 8px 12px;">
@@ -381,7 +381,7 @@
         </div>
 
         <!-- Превью карточки -->
-        <div class="preview">
+        <div class="preview" id="preview">
             <div class="card-container" id="cardContainer" style="background-image: url('https://res.cloudinary.com/dplmdnxvk/image/upload/v1793908124/snel0rq4zsofkw6zafov.png');">
                 <div class="header">
                     <div class="logo-square">
@@ -431,6 +431,21 @@
                 UI._timer = setTimeout(() => el.style.display = "none", 5000);
             }
         };
+
+        // --- МАСШТАБ ПРЕВЬЮ (главное исправление для телефона) ---
+        function fitPreview() {
+            const preview = document.getElementById('preview');
+            const card = document.getElementById('cardContainer');
+            if (!preview || !card) return;
+            const k = preview.clientWidth / 700;
+            card.style.setProperty('--k', k);
+        }
+        if (window.ResizeObserver) {
+            new ResizeObserver(fitPreview).observe(document.getElementById('preview'));
+        } else {
+            window.addEventListener('resize', fitPreview);
+        }
+        window.addEventListener('load', fitPreview);
 
         // --- ВКЛАДКИ ---
         document.querySelectorAll('.tabs button').forEach(tab => {
