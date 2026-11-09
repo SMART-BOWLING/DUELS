@@ -239,7 +239,6 @@
             display: flex;
             flex-direction: column;
             transform-origin: 0 0;
-            /* Масштаб ставит JS: --k = ширина превью / 700 */
             transform: scale(var(--k, 1));
         }
 
@@ -277,9 +276,15 @@
         }
 
         .card-top { flex: 1; position: relative; width: 100%; overflow: hidden; }
+
+        /* ФОТО через background-image (html2canvas корректно рендерит background-size: cover) */
         .player-photo {
-            width: 100%; height: 100%; object-fit: cover; object-position: top center;
-            z-index: 2; position: relative;
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+            z-index: 2;
             display: none;
         }
         .player-photo.visible { display: block; }
@@ -397,7 +402,7 @@
                     <div class="player-card yellow" id="cardYellow">
                         <div class="card-top">
                             <div class="rank-number" id="rankLeft"></div>
-                            <img alt="" class="player-photo" id="photoLeft">
+                            <div class="player-photo" id="photoLeft"></div>
                         </div>
                         <div class="player-name-box"><span id="nameLeft"></span></div>
                     </div>
@@ -405,7 +410,7 @@
                     <div class="player-card red" id="cardRed">
                         <div class="card-top">
                             <div class="rank-number left" id="rankRight"></div>
-                            <img alt="" class="player-photo" id="photoRight">
+                            <div class="player-photo" id="photoRight"></div>
                         </div>
                         <div class="player-name-box"><span id="nameRight"></span></div>
                     </div>
@@ -432,7 +437,7 @@
             }
         };
 
-        // --- МАСШТАБ ПРЕВЬЮ (главное исправление для телефона) ---
+        // --- МАСШТАБ ПРЕВЬЮ ---
         function fitPreview() {
             const preview = document.getElementById('preview');
             const card = document.getElementById('cardContainer');
@@ -595,14 +600,13 @@
             const player = nick ? state.players.get(nick.toLowerCase()) : null;
 
             if (player && player.photo) {
-                photoEl.src = player.photo;
+                // background-image вместо <img> — html2canvas рендерит корректно
+                photoEl.style.backgroundImage = `url("${player.photo}")`;
                 photoEl.classList.add('visible');
-                photoEl.alt = player.nick;
                 nameEl.textContent = player.nick.toUpperCase();
             } else {
-                photoEl.removeAttribute('src');
+                photoEl.style.backgroundImage = '';
                 photoEl.classList.remove('visible');
-                photoEl.alt = "";
                 nameEl.textContent = "";
                 if (nick) UI.status(`Игрок «${nick}» не найден в PLAYERS`, "info");
             }
@@ -761,6 +765,8 @@
         };
 
         // --- РЕНДЕР В КЛОН ---
+        // Фото теперь рендерится как background-image (см. .player-photo в CSS),
+        // а html2canvas корректно отрисовывает background-size: cover.
         async function renderToCanvas() {
             const container = document.getElementById('cardContainer');
 
@@ -777,12 +783,28 @@
             document.body.appendChild(clone);
 
             try {
+                // Ждём загрузки всех img (логотипы турнира, команды) и фоновых фото
                 const imgs = Array.from(clone.querySelectorAll('img'));
                 await Promise.all(imgs.map(img => {
                     if (!img.getAttribute('src')) return Promise.resolve();
                     if (img.complete && img.naturalWidth > 0) return Promise.resolve();
                     return new Promise(resolve => {
                         img.onload = img.onerror = resolve;
+                    });
+                }));
+
+                // Ждём загрузки фоновых картинок (фото игроков)
+                const bgEls = Array.from(clone.querySelectorAll('.player-photo'));
+                await Promise.all(bgEls.map(el => {
+                    const bg = el.style.backgroundImage;
+                    if (!bg || bg === 'none') return Promise.resolve();
+                    const m = /url\(["']?([^"')]+)["']?\)/.exec(bg);
+                    if (!m) return Promise.resolve();
+                    return new Promise(resolve => {
+                        const im = new Image();
+                        im.crossOrigin = 'anonymous';
+                        im.onload = im.onerror = () => resolve();
+                        im.src = m[1];
                     });
                 }));
 
