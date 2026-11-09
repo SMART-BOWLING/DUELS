@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSPORTS | Генератор Дуэлей</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <style>
+        /* --- СТИЛИ ИЗ ТВОЕГО САЙТА --- */
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            color-scheme: light;
+        }
+        body {
+            margin: 0;
+            background: #f2f2f7;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Стили вкладок */
+        .tabs {
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 16px 0;
+            overflow-x: auto;
+        }
+        .tabs button {
+            flex: 1 1 0;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            background: #e5e5ea;
+            color: #1a2b3c;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .tabs button.active {
+            background: #1a2b3c;
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Общие стили */
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1100px;
+            margin: 20px auto;
+            align-items: center;
+            gap: 24px;
+            padding: 0 16px;
+        }
+        @media (min-width: 1100px) {
+            .app-container {
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: center;
+                gap: 40px;
+            }
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 521px;
+            min-width: 0;
+            width: 100%;
+        }
+        .row-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #1c1c1e;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+        .controls select {
+            padding: 8px 12px;
+            font-family: inherit;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            background: #f2f2f7;
+            color: #1c1c1e;
+            outline: none;
+            transition: background 0.2s;
+        }
+        .row-label select {
+            text-align: right;
+            max-width: 160px;
+        }
+        .primary-btn {
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            border-radius: 12px;
+            background: #1a2b3c;
+            color: #ffffff;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            width: 100%;
+        }
+        .primary-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Превью */
+        .preview {
+            position: relative;
+            width: 100%;
+            max-width: 521px;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            flex-shrink: 0;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            background: #2c3e50;
+        }
+
+        /* --- СТИЛИ КАРТОЧКИ --- */
+        .card-container {
+            position: relative;
+            width: 700px;
+            height: 700px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 25px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            transform-origin: 0 0;
+            transform: scale(calc(521 / 700));
+        }
+
+        .header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; z-index: 10; }
+        .logo-square {
+            width: 85px; height: 85px; background-color: #d11d32; border-radius: 12px;
+            overflow: hidden; flex-shrink: 0; display: flex; justify-content: center; align-items: center;
+        }
+        .pgl-logo-img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+        .title-lines { display: flex; flex-direction: column; align-items: flex-start; height: 85px; justify-content: space-between; }
+        .title-line {
+            background: #e4e8ee; color: black; padding: 5px 14px; border-radius: 6px;
+            font-size: 22px; font-weight: 900; line-height: 1.1; text-transform: uppercase; white-space: nowrap;
+        }
+
+        .players-grid { display: flex; gap: 20px; flex: 1; z-index: 10; min-height: 0; }
+        .player-card {
+            flex: 1; border-radius: 16px; position: relative; display: flex;
+            flex-direction: column; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .player-card.yellow { background: linear-gradient(180deg, #fce83a 0%, #fdf7d5 100%); }
+        .player-card.red { background: linear-gradient(180deg, #e45656 0%, #f7bebe 100%); }
+
+        .card-top { flex: 1; position: relative; width: 100%; overflow: hidden; }
+        .player-photo { width: 100%; height: 100%; object-fit: cover; object-position: top center; z-index: 2; position: relative; }
+
+        .rank-number {
+            position: absolute; top: 10px; right: 20px; font-size: 85px; font-weight: 900;
+            color: white; z-index: 5; line-height: 1; text-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+        .rank-number.left { right: auto; left: 20px; }
+
+        .player-name-box {
+            background: #d9d9d9; height: 70px; display: flex; align-items: center;
+            justify-content: center; width: 100%; border-radius: 0 0 16px 16px; z-index: 3;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+        }
+        .player-name-box span { color: black; font-size: 34px; font-weight: 900; text-transform: uppercase; }
+
+        .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; z-index: 10; }
+        .bottom-logo { height: 30px; width: auto; object-fit: contain; }
+        .map-badge {
+            background: #f43f5e; color: white; padding: 6px 16px; border-radius: 6px;
+            font-weight: 900; font-size: 16px; letter-spacing: 1px;
+            transition: background 0.25s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- НАВИГАЦИЯ (одна вкладка) -->
+    <nav class="tabs" id="tabs">
+        <button type="button" class="active" data-tab="duel">Дуэли</button>
+    </nav>
+
+    <div id="duel" class="tab-content active">
+        <div class="app-container">
+            <!-- Панель управления -->
+            <div class="controls">
+                <label class="row-label">
+                    <span>Карта:</span>
+                    <select id="map">
+                        <option value="">Загрузка...</option>
+                    </select>
+                </label>
+
+                <button id="downloadBtn" class="primary-btn" style="margin-top: 10px;">Скачать (PNG)</button>
+            </div>
+
+            <!-- Превью карточки -->
+            <div class="preview">
+                <div class="card-container" id="cardContainer" style="background-image: url('https://res.cloudinary.com/dplmdnxvk/image/upload/v1793908124/snel0rq4zsofkw6zafov.png');">
+                    <div class="header">
+                        <div class="logo-square">
+                            <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1794222120/u1tztklcbshoyf0ujiov.png" alt="PGL Logo" class="pgl-logo-img">
+                        </div>
+                        <div class="title-lines">
+                            <div class="title-line">ДУЭЛИ НА PGL MAJOR</div>
+                            <div class="title-line">SINGAPORE SAGE 1</div>
+                        </div>
+                    </div>
+
+                    <div class="players-grid">
+                        <div class="player-card yellow">
+                            <div class="card-top">
+                                <div class="rank-number">3</div>
+                                <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1792854477/u9e5hghueoxllzyjnr5e.png" alt="Wonderfull" class="player-photo">
+                            </div>
+                            <div class="player-name-box"><span>WONDERFULL</span></div>
+                        </div>
+
+                        <div class="player-card red">
+                            <div class="card-top">
+                                <div class="rank-number left">5</div>
+                                <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1792953465/fwftwrwo82luzkcfr2gf.png" alt="Wonderfull" class="player-photo">
+                            </div>
+                            <div class="player-name-box"><span>WONDERFULL</span></div>
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1794221897/ie0kiwm8ccfemle0tn2a.png" alt="CSports Logo" class="bottom-logo">
+                        <div class="map-badge" id="mapBadge">NUKE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- ЛОГИКА ВКЛАДОК ---
+        const tabs = document.querySelectorAll('.tabs button');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // --- ЦВЕТА КАРТ (как в "Результат матча") ---
+        const MAP_COLORS = {
+            INFERNO: "#2f72d6",
+            OVERPASS: "#f27a14",
+            DUST2: "#d9c41a",
+            MIRAGE: "#8a4fd6",
+            ANUBIS: "#c42d78",
+            ANCIENT: "#1f9a80",
+            NUKE: "#d6453a",
+            TRAIN: "#6bb544",
+            CACHE: "#4cb4d6"
+        };
+
+        const mapColor = name =>
+            MAP_COLORS[String(name).toUpperCase().replace(/[^A-Z0-9]/g, "")] || "#9a5cf8";
+
+        // --- ЗАГРУЗКА КАРТ (API) ---
+        const API_URL = "https://script.google.com/macros/s/AKfycbxJZEfppSo6QZpmpiEDR1FaOpIjHdfQDXdj-x80uoIy-SU30nKgIgfvr3DNgQbroi53/exec";
+        const SHEET_ID = "188jMHUJs1KkmCAzG7XZYTnTY9SnNIx0JlXJoEdMTees";
+
+        async function loadMaps() {
+            try {
+                const url = new URL(API_URL);
+                url.searchParams.set("sheetId", SHEET_ID);
+                url.searchParams.set("sheetName", "MAPS");
+
+                const res = await fetch(url);
+                const json = await res.json();
+                if (!json.success) throw new Error(json.error);
+
+                // Парсим лист MAPS: A - название, C - ссылка на фон
+                const maps = json.data.slice(1)
+                    .filter(row => row[0])
+                    .map(row => ({
+                        name: String(row[0]).toUpperCase(),
+                        bg: row[2] ? String(row[2]).trim() : ""
+                    }));
+
+                const select = document.getElementById('map');
+                select.innerHTML = maps.map((m, i) =>
+                    `<option value="${i}">${m.name}</option>`
+                ).join('');
+
+                // Применяем первую карту сразу при загрузке
+                applyMap(maps[0]);
+
+                // Меняем фон и название (и цвет) при выборе другой карты
+                select.onchange = () => applyMap(maps[select.value]);
+
+            } catch (e) {
+                console.error("Ошибка загрузки карт:", e);
+                document.getElementById('map').innerHTML = '<option>Ошибка API</option>';
+            }
+        }
+
+        // --- МЕНЯЕМ ФОН, НАЗВАНИЕ И ЦВЕТ КАРТЫ ---
+        function applyMap(mapData) {
+            if (!mapData) return;
+            const container = document.getElementById('cardContainer');
+            const badge = document.getElementById('mapBadge');
+
+            if (mapData.bg) {
+                container.style.backgroundImage = `url('${mapData.bg}')`;
+            }
+            badge.textContent = mapData.name;
+            badge.style.background = mapColor(mapData.name);
+        }
+
+        // --- СКАЧИВАНИЕ ---
+        document.getElementById('downloadBtn').onclick = async () => {
+            const container = document.getElementById('cardContainer');
+            try {
+                const originalTransform = container.style.transform;
+                container.style.transform = 'none';
+
+                const canvas = await html2canvas(container, {
+                    useCORS: true,
+                    scale: 2,
+                    backgroundColor: null,
+                    width: 700,
+                    height: 700
+                });
+
+                container.style.transform = originalTransform;
+
+                const a = document.createElement('a');
+                a.download = 'duel-card.png';
+                a.href = canvas.toDataURL('image/png');
+                a.click();
+            } catch (e) {
+                alert("Ошибка при скачивании: " + e.message);
+            }
+        };
+
+        loadMaps();
+    </script>
+</body>
+</html>
