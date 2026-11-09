@@ -152,25 +152,25 @@
         }
         .player-photo.visible { display: block; }
 
-        /* === ЛОГО КОМАНДЫ — с противоположной стороны от счёта, с белой подложкой === */
-        .team-logo {
-            position: absolute;
-            top: 14px;
-            width: 50px;
-            height: 50px;
-            z-index: 8;
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: rgba(255, 255, 255, 0.85);
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-            display: none;
-            pointer-events: none;
-        }
-        .team-logo.visible { display: block; }
-        .team-logo.left  { left: 16px; }
-        .team-logo.right { right: 16px; }
+        /* === ЛОГО КОМАНДЫ — белая подложка почти не выглядывает из-за логотипа === */
+.team-logo {
+    position: absolute;
+    top: 14px;
+    width: 96px;
+    height: 96px;
+    z-index: 8;
+    background-size: 94%;                          /* лого почти на всю подложку */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(255, 255, 255, 0.85);   /* белую вернул, но её почти не видно */
+    border-radius: 8px;                            /* скругление по размеру лого */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    display: none;
+    pointer-events: none;
+}
+.team-logo.visible { display: block; }
+.team-logo.left  { left: 16px; }
+.team-logo.right { right: 16px; }
 
         .rank-number {
             position: absolute; top: 10px; right: 20px; font-family: var(--font-number);
