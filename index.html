@@ -125,6 +125,10 @@
             max-width: 160px;
             min-width: 0;
         }
+        .controls details summary {
+            cursor: pointer;
+            font-weight: 500;
+        }
 
         /* Цветовые инпуты */
         .controls input[type=color] {
@@ -136,72 +140,18 @@
             border-radius: 8px;
             background: #f2f2f7;
         }
-
-        /* --- ПАНЕЛЬ ГРАДИЕНТА (под превью) --- */
-        .gradient-panel {
-            width: 100%;
-            max-width: 521px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 12px 16px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-            font-size: 16px;
-            font-weight: 500;
-            color: #1c1c1e;
-        }
-        .gradient-panel summary {
-            cursor: pointer;
-            font-weight: 600;
-            list-style: none;
-            user-select: none;
-        }
-        .gradient-panel summary::-webkit-details-marker { display: none; }
-        .gradient-panel summary::before {
-            content: "▸ ";
-            display: inline-block;
-            transition: transform 0.2s;
-        }
-        .gradient-panel[open] summary::before { transform: rotate(90deg); }
-
-        .gradient-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 12px;
-        }
-        .gradient-col {
-            background: #f2f2f7;
-            border-radius: 10px;
-            padding: 10px 12px;
-        }
-        .gradient-col-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #1a2b3c;
-        }
-        .gradient-col .color-row {
+        .color-row {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             flex-wrap: wrap;
         }
-        .gradient-col .color-row label {
+        .color-row label {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 500;
+            gap: 8px;
+            font-size: 14px;
             color: #1c1c1e;
-        }
-        .gradient-panel input[type=color] {
-            width: 40px;
-            height: 32px;
-            padding: 2px;
-            cursor: pointer;
-            border-radius: 8px;
-            background: #ffffff;
-            border: 1px solid #e5e5ea;
+            font-weight: 500;
         }
 
         /* --- КНОПКИ --- */
@@ -255,11 +205,9 @@
             background: #2c3e50;
             order: -1;
         }
-
         @media (min-width: 1100px) {
             .app-container {
                 flex-direction: row;
-                flex-wrap: wrap;
                 align-items: flex-start;
                 justify-content: center;
                 gap: 40px;
@@ -269,22 +217,11 @@
                 position: sticky;
                 top: 16px;
             }
-            .gradient-panel {
-                order: 1;
-                flex: 0 1 auto;
-                max-width: 521px;
-                margin: 0;
-            }
-            .controls {
-                order: 2;
-            }
         }
-
         @media (max-width: 600px) {
             body { padding: 12px 10px; }
             .row-label,
             .col-label { padding: 10px 12px; }
-            .gradient-grid { grid-template-columns: 1fr; }
         }
 
         /* --- КАРТОЧКА --- */
@@ -384,67 +321,26 @@
     </nav>
 
     <div class="app-container">
-        <!-- Превью карточки -->
-        <div class="preview" id="preview">
-            <div class="card-container" id="cardContainer" style="background-image: url('https://res.cloudinary.com/dplmdnxvk/image/upload/v1793908124/snel0rq4zsofkw6zafov.png');">
-                <div class="header">
-                    <div class="logo-square">
-                        <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1794222120/u1tztklcbshoyf0ujiov.png" alt="Tournament Logo" class="pgl-logo-img" id="tournamentLogo">
-                    </div>
-                    <div class="title-lines">
-                        <div class="title-line" id="titleTopLine">ДУЭЛІ НА PGL MAJOR</div>
-                        <div class="title-line" id="titleBottomLine">SINGAPORE SAGE 1</div>
-                    </div>
-                </div>
-
-                <div class="players-grid">
-                    <div class="player-card yellow" id="cardYellow">
-                        <div class="card-top">
-                            <div class="rank-number" id="rankLeft"></div>
-                            <div class="player-photo" id="photoLeft"></div>
-                        </div>
-                        <div class="player-name-box"><span id="nameLeft"></span></div>
-                    </div>
-
-                    <div class="player-card red" id="cardRed">
-                        <div class="card-top">
-                            <div class="rank-number left" id="rankRight"></div>
-                            <div class="player-photo" id="photoRight"></div>
-                        </div>
-                        <div class="player-name-box"><span id="nameRight"></span></div>
-                    </div>
-                </div>
-
-                <div class="footer">
-                    <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1794221897/ie0kiwm8ccfemle0tn2a.png" alt="CSports Logo" class="bottom-logo">
-                    <div class="map-badge" id="mapBadge">NUKE</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ПАНЕЛЬ ГРАДИЕНТА (перенесена наверх, под картинку) -->
-        <details class="gradient-panel" open>
-            <summary>Градиент карточек игроков</summary>
-            <div class="gradient-grid">
-                <div class="gradient-col">
-                    <div class="gradient-col-title">Левый (жёлтый)</div>
-                    <div class="color-row">
-                        <label>Верх <input type="color" id="yellowTop" value="#fce83a" /></label>
-                        <label>Низ <input type="color" id="yellowBottom" value="#fdf7d5" /></label>
-                    </div>
-                </div>
-                <div class="gradient-col">
-                    <div class="gradient-col-title">Правый (красный)</div>
-                    <div class="color-row">
-                        <label>Верх <input type="color" id="redTop" value="#e45656" /></label>
-                        <label>Низ <input type="color" id="redBottom" value="#f7bebe" /></label>
-                    </div>
-                </div>
-            </div>
-        </details>
-
         <!-- Панель управления -->
         <div class="controls">
+            <details class="col-label" open>
+                <summary>Градиент карточек игроков</summary>
+                <div class="color-row">
+                    <label>Левый (жёлтый):</label>
+                </div>
+                <div class="color-row">
+                    <label>Верх <input type="color" id="yellowTop" value="#fce83a" /></label>
+                    <label>Низ <input type="color" id="yellowBottom" value="#fdf7d5" /></label>
+                </div>
+                <div class="color-row">
+                    <label>Правый (красный):</label>
+                </div>
+                <div class="color-row">
+                    <label>Верх <input type="color" id="redTop" value="#e45656" /></label>
+                    <label>Низ <input type="color" id="redBottom" value="#f7bebe" /></label>
+                </div>
+            </details>
+
             <label class="row-label">
                 <span>Турнир:</span>
                 <select id="tournament"><option value="">Загрузка...</option></select>
@@ -485,6 +381,44 @@
                 <div class="btn-group">
                     <button id="downloadBtn" class="secondary-btn">Скачать (PNG)</button>
                     <button id="shareBtn" class="secondary-btn">Поделиться</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Превью карточки -->
+        <div class="preview" id="preview">
+            <div class="card-container" id="cardContainer" style="background-image: url('https://res.cloudinary.com/dplmdnxvk/image/upload/v1793908124/snel0rq4zsofkw6zafov.png');">
+                <div class="header">
+                    <div class="logo-square">
+                        <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1794222120/u1tztklcbshoyf0ujiov.png" alt="Tournament Logo" class="pgl-logo-img" id="tournamentLogo">
+                    </div>
+                    <div class="title-lines">
+                        <div class="title-line" id="titleTopLine">ДУЭЛІ НА PGL MAJOR</div>
+                        <div class="title-line" id="titleBottomLine">SINGAPORE SAGE 1</div>
+                    </div>
+                </div>
+
+                <div class="players-grid">
+                    <div class="player-card yellow" id="cardYellow">
+                        <div class="card-top">
+                            <div class="rank-number" id="rankLeft"></div>
+                            <div class="player-photo" id="photoLeft"></div>
+                        </div>
+                        <div class="player-name-box"><span id="nameLeft"></span></div>
+                    </div>
+
+                    <div class="player-card red" id="cardRed">
+                        <div class="card-top">
+                            <div class="rank-number left" id="rankRight"></div>
+                            <div class="player-photo" id="photoRight"></div>
+                        </div>
+                        <div class="player-name-box"><span id="nameRight"></span></div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <img src="https://res.cloudinary.com/dplmdnxvk/image/upload/v1794221897/ie0kiwm8ccfemle0tn2a.png" alt="CSports Logo" class="bottom-logo">
+                    <div class="map-badge" id="mapBadge">NUKE</div>
                 </div>
             </div>
         </div>
@@ -831,7 +765,7 @@
         };
 
         // --- РЕНДЕР В КЛОН ---
-        // Фото рендерится как background-image (см. .player-photo в CSS),
+        // Фото теперь рендерится как background-image (см. .player-photo в CSS),
         // а html2canvas корректно отрисовывает background-size: cover.
         async function renderToCanvas() {
             const container = document.getElementById('cardContainer');
