@@ -307,7 +307,7 @@
             flex: 1;
             position: relative;
             border-radius: 16px;
-            overflow: hidden;
+            overflow: visible;
             box-shadow: 0 8px 20px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
@@ -331,15 +331,18 @@
             position: relative;
             width: 100%;
             overflow: hidden;
+            border-radius: 16px 16px 0 0;
         }
         .player-photo {
             position: absolute;
             inset: 0;
             background-size: cover;
-            background-position: top center;
+            background-position: center 20%;
             background-repeat: no-repeat;
             z-index: 2;
             display: none;
+            transform: scale(1.25);
+            transform-origin: top center;
         }
         .player-photo.visible { display: block; }
         .rank-number {
@@ -358,7 +361,7 @@
         .rank-number:empty { display: none; }
         .player-name-box {
             background: #d9d9d9;
-            height: 70px;
+            height: 95px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -366,11 +369,13 @@
             border-radius: 0 0 16px 16px;
             z-index: 3;
             box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            top: 0;
         }
         .player-name-box span {
             color: black;
             font-family: var(--font-heading);
-            font-size: 34px;
+            font-size: 42px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
