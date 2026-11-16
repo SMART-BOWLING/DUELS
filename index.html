@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CSPORTS | Генератор Дуэлей</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
 
     <style>
         /* --- БАЗА --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-size: 16px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         html {
             color-scheme: light;
             width: 100%;
@@ -22,24 +22,20 @@
             margin: 0;
             background: #f2f2f7;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 16px;
             padding: 12px 10px;
             align-items: center;
             display: flex;
             flex-direction: column;
             touch-action: manipulation;
             overflow-x: hidden;
-            -webkit-text-size-adjust: 100%;
         }
 
-        /* --- ЖЁСТКАЯ ФИКСАЦИЯ РАЗМЕРА ШРИФТА ДЛЯ ВСЕХ ПОЛЕЙ ВВОДА --- */
+        /* === ГЛАВНОЕ ПРАВИЛО ДЛЯ iOS: ВСЕ ПОЛЯ ВВОДА — 16px === */
         input,
         select,
-        textarea,
-        button,
-        .controls input,
-        .controls select,
-        .controls textarea {
-            font-size: 16px !important;
+        textarea {
+            font-size: 16px;
             -webkit-text-size-adjust: 100%;
         }
 
@@ -366,39 +362,6 @@
     </div>
 
     <script>
-        // === ГЛАВНОЕ РЕШЕНИЕ ПРОБЛЕМЫ ЗУМА НА iOS ===
-        // Safari на iPhone игнорирует user-scalable=no и зумит при фокусе на полях с font-size < 16px.
-        // Здесь мы принудительно фиксируем viewport после любого фокуса.
-        (function preventZoom() {
-            let viewport = document.querySelector('meta[name="viewport"]');
-            if (!viewport) {
-                viewport = document.createElement('meta');
-                viewport.name = 'viewport';
-                document.head.appendChild(viewport);
-            }
-            const resetViewport = () => {
-                viewport.setAttribute('content',
-                    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-            };
-            resetViewport();
-
-            // Принудительно сбрасываем масштаб после blur/focus
-            document.addEventListener('focusin', () => {
-                resetViewport();
-                // Небольшая задержка, чтобы Safari применил изменения
-                setTimeout(resetViewport, 50);
-            }, true);
-
-            document.addEventListener('focusout', () => {
-                setTimeout(resetViewport, 50);
-            }, true);
-
-            // Дополнительная защита: сбрасываем масштаб при любом тапе
-            document.addEventListener('touchend', () => {
-                setTimeout(resetViewport, 30);
-            }, { passive: true });
-        })();
-
         const UI = {
             status(msg, type = "info") {
                 const el = document.getElementById("statusMessage");
