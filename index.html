@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CSPORTS | Генератор Дуэлей</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,12 @@
     <style>
         /* --- БАЗА --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-size: 16px; }
-        html { color-scheme: light; width: 100%; -webkit-text-size-adjust: 100%; }
+        html {
+            color-scheme: light;
+            width: 100%;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
         body {
             margin: 0;
             background: #f2f2f7;
@@ -23,6 +28,19 @@
             flex-direction: column;
             touch-action: manipulation;
             overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* --- ЖЁСТКАЯ ФИКСАЦИЯ РАЗМЕРА ШРИФТА ДЛЯ ВСЕХ ПОЛЕЙ ВВОДА --- */
+        input,
+        select,
+        textarea,
+        button,
+        .controls input,
+        .controls select,
+        .controls textarea {
+            font-size: 16px !important;
+            -webkit-text-size-adjust: 100%;
         }
 
         /* --- ВКЛАДКИ --- */
@@ -53,7 +71,7 @@
         }
         .controls span { white-space: nowrap; }
         .controls input, .controls select, .controls textarea {
-            padding: 10px 12px; font-family: inherit; font-size: 16px; border-radius: 8px;
+            padding: 10px 12px; font-family: inherit; border-radius: 8px;
             border: none; background: #f2f2f7; color: #1c1c1e; outline: none; transition: background 0.2s;
             touch-action: manipulation;
         }
@@ -107,7 +125,7 @@
             body { padding: 10px 8px; }
             .tabs button { font-size: 14px; padding: 9px 12px; }
             .row-label, .col-label { padding: 10px 12px; font-size: 15px; }
-            .controls input, .controls select, .controls textarea { padding: 10px; font-size: 16px; }
+            .controls input, .controls select, .controls textarea { padding: 10px; }
             .row-label select, .row-label input { max-width: 130px; }
             .primary-btn, .secondary-btn { padding: 13px; font-size: 15px; }
             .btn-group { flex-direction: column; }
@@ -168,7 +186,6 @@
         }
         .card-top { flex: 1; position: relative; width: 100%; overflow: hidden; border-radius: 16px 16px 0 0; }
 
-        /* Фото игрока */
         .player-photo {
             position: absolute; inset: 0; background-size: cover;
             background-position: center 20%; background-repeat: no-repeat;
@@ -177,7 +194,6 @@
         }
         .player-photo.visible { display: block; }
 
-        /* Лого команды */
         .team-logo {
             position: absolute; top: 14px; width: 64px; height: 64px; z-index: 8;
             background-size: 96%; background-position: center; background-repeat: no-repeat;
@@ -350,6 +366,39 @@
     </div>
 
     <script>
+        // === ГЛАВНОЕ РЕШЕНИЕ ПРОБЛЕМЫ ЗУМА НА iOS ===
+        // Safari на iPhone игнорирует user-scalable=no и зумит при фокусе на полях с font-size < 16px.
+        // Здесь мы принудительно фиксируем viewport после любого фокуса.
+        (function preventZoom() {
+            let viewport = document.querySelector('meta[name="viewport"]');
+            if (!viewport) {
+                viewport = document.createElement('meta');
+                viewport.name = 'viewport';
+                document.head.appendChild(viewport);
+            }
+            const resetViewport = () => {
+                viewport.setAttribute('content',
+                    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+            };
+            resetViewport();
+
+            // Принудительно сбрасываем масштаб после blur/focus
+            document.addEventListener('focusin', () => {
+                resetViewport();
+                // Небольшая задержка, чтобы Safari применил изменения
+                setTimeout(resetViewport, 50);
+            }, true);
+
+            document.addEventListener('focusout', () => {
+                setTimeout(resetViewport, 50);
+            }, true);
+
+            // Дополнительная защита: сбрасываем масштаб при любом тапе
+            document.addEventListener('touchend', () => {
+                setTimeout(resetViewport, 30);
+            }, { passive: true });
+        })();
+
         const UI = {
             status(msg, type = "info") {
                 const el = document.getElementById("statusMessage");
