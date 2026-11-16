@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CSPORTS | Генератор Дуэлей</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,62 +12,69 @@
     <style>
         /* --- БАЗА --- */
         * { box-sizing: border-box; margin: 0; padding: 0; font-size: 16px; }
-        html { color-scheme: light; width: 100%; }
+        html { color-scheme: light; width: 100%; -webkit-text-size-adjust: 100%; }
         body {
             margin: 0;
             background: #f2f2f7;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            padding: 20px 16px;
+            padding: 12px 10px;
             align-items: center;
             display: flex;
             flex-direction: column;
+            touch-action: manipulation;
+            overflow-x: hidden;
         }
 
         /* --- ВКЛАДКИ --- */
-        .tabs { display: flex; gap: 6px; width: 100%; max-width: 1100px; margin: 0 auto 16px; padding: 0; overflow-x: auto; }
+        .tabs { display: flex; gap: 6px; width: 100%; max-width: 1100px; margin: 0 auto 12px; padding: 0; overflow-x: auto; }
         .tabs button {
             flex: 1 1 0; padding: 10px 16px; border: none; border-radius: 10px;
             background: #e5e5ea; color: #1a2b3c; font: inherit; font-size: 15px;
             font-weight: 600; white-space: nowrap; cursor: pointer; transition: background 0.2s;
+            touch-action: manipulation;
         }
         .tabs button.active { background: #1a2b3c; color: #fff; }
 
         /* --- КОНТЕЙНЕР И ПАНЕЛЬ УПРАВЛЕНИЯ --- */
-        .app-container { display: flex; flex-direction: column; width: 100%; max-width: 1100px; align-items: center; gap: 24px; }
-        .controls { display: flex; flex-direction: column; gap: 10px; max-width: 521px; min-width: 0; width: 100%; }
+        .app-container { display: flex; flex-direction: column; width: 100%; max-width: 1100px; align-items: center; gap: 16px; }
+        .controls { display: flex; flex-direction: column; gap: 8px; max-width: 521px; min-width: 0; width: 100%; }
         .row-label {
             display: flex; align-items: center; justify-content: space-between;
             background: #ffffff; padding: 12px 16px; border-radius: 12px;
             font-size: 16px; font-weight: 500; color: #1c1c1e;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02); gap: 12px;
+            touch-action: manipulation;
         }
         .col-label {
             display: flex; flex-direction: column; background: #ffffff; padding: 12px 16px;
             border-radius: 12px; font-size: 16px; font-weight: 500; color: #1c1c1e;
             gap: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            touch-action: manipulation;
         }
         .controls span { white-space: nowrap; }
         .controls input, .controls select, .controls textarea {
-            padding: 8px 12px; font-family: inherit; font-size: 16px; border-radius: 8px;
+            padding: 10px 12px; font-family: inherit; font-size: 16px; border-radius: 8px;
             border: none; background: #f2f2f7; color: #1c1c1e; outline: none; transition: background 0.2s;
+            touch-action: manipulation;
         }
         .controls input:focus, .controls select:focus, .controls textarea:focus { background: #e5e5ea; }
         .row-label select, .row-label input { text-align: right; max-width: 160px; min-width: 0; }
-        .controls details summary { cursor: pointer; font-weight: 500; }
+        .controls details summary { cursor: pointer; font-weight: 500; padding: 4px 0; }
 
         .controls input[type=color] {
             width: 44px; height: 36px; padding: 2px; cursor: pointer; flex-shrink: 0;
             border-radius: 8px; background: #f2f2f7;
         }
-        .color-row { display: flex; gap: 16px; flex-wrap: wrap; }
-        .color-row label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #1c1c1e; font-weight: 500; }
+        .color-row { display: flex; gap: 12px; flex-wrap: wrap; }
+        .color-row label { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #1c1c1e; font-weight: 500; }
 
         /* --- КНОПКИ --- */
         .action-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-        .btn-group { display: flex; gap: 8px; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
         .primary-btn, .secondary-btn {
             padding: 14px; font-size: 16px; font-weight: 600; cursor: pointer;
             border: none; border-radius: 12px; transition: opacity 0.2s ease, transform 0.1s ease; width: 100%;
+            touch-action: manipulation;
         }
         .primary-btn { background: #1a2b3c; color: #ffffff; }
         .secondary-btn { background: #e5e5ea; color: #1a2b3c; }
@@ -78,6 +85,7 @@
         .status {
             max-width: 500px; margin: 10px auto; padding: 10px; border-radius: 6px;
             font-size: 14px; text-align: center; display: none;
+            word-break: break-word;
         }
         .status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .status.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
@@ -93,9 +101,26 @@
             .app-container { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; }
             .preview { order: 0; position: sticky; top: 16px; }
         }
+
+        /* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
         @media (max-width: 600px) {
-            body { padding: 12px 10px; }
-            .row-label, .col-label { padding: 10px 12px; }
+            body { padding: 10px 8px; }
+            .tabs button { font-size: 14px; padding: 9px 12px; }
+            .row-label, .col-label { padding: 10px 12px; font-size: 15px; }
+            .controls input, .controls select, .controls textarea { padding: 10px; font-size: 16px; }
+            .row-label select, .row-label input { max-width: 130px; }
+            .primary-btn, .secondary-btn { padding: 13px; font-size: 15px; }
+            .btn-group { flex-direction: column; }
+            .color-row { gap: 8px; }
+            .color-row label { font-size: 13px; }
+            .controls input[type=color] { width: 40px; height: 34px; }
+        }
+
+        @media (max-width: 380px) {
+            body { padding: 8px 6px; }
+            .tabs button { font-size: 13px; padding: 8px 10px; }
+            .row-label, .col-label { padding: 9px 10px; font-size: 14px; }
+            .row-label select, .row-label input { max-width: 110px; }
         }
 
         /* --- КАРТОЧКА --- */
@@ -152,25 +177,16 @@
         }
         .player-photo.visible { display: block; }
 
-        /* === ЛОГО КОМАНДЫ — маленькая подложка, белое почти не выглядывает === */
-.team-logo {
-    position: absolute;
-    top: 14px;
-    width: 64px;                                   /* сам блок меньше */
-    height: 64px;
-    z-index: 8;
-    background-size: 96%;                          /* лого почти на всю площадь */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: rgba(255, 255, 255, 0.85);   /* белая, но её почти не видно */
-    border-radius: 6px;                            /* скругление под размер блока */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-    display: none;
-    pointer-events: none;
-}
-.team-logo.visible { display: block; }
-.team-logo.left  { left: 16px; }
-.team-logo.right { right: 16px; }
+        /* Лого команды */
+        .team-logo {
+            position: absolute; top: 14px; width: 64px; height: 64px; z-index: 8;
+            background-size: 96%; background-position: center; background-repeat: no-repeat;
+            background-color: rgba(255, 255, 255, 0.85); border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); display: none; pointer-events: none;
+        }
+        .team-logo.visible { display: block; }
+        .team-logo.left  { left: 16px; }
+        .team-logo.right { right: 16px; }
 
         .rank-number {
             position: absolute; top: 10px; right: 20px; font-family: var(--font-number);
@@ -204,7 +220,7 @@
         }
         .footer2 .fp.tg {
             left: 229px; top: 1px; width: 42px; height: 42px;
-            background: #2e88f7 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAAJgSURBVHicvZdfaE5xGMc/exulFAup1YxiUthIu2CF/Lvg0t9IuRE3EheS3KjVbrQbF25QuHJBSQ3ztzWKks3mSnKzGmq1bI3UPi7OOTm93vec37u9863T2+88z3k+v+c8zznneWtUAtUCbAdagRXAYmAWMA4MAYNAL/AIGA6KqOYd+9XnhmtCva625MXOMraoLyqAllKnWlMp/Pg0oWkNqitD4eerCE40oa7Ngx+eAXCiH+r8NK/Gv93eCHwJbf0p6hWwKVkUUoa7MwwG2AgcTRZJ5ruAh/8BDjAGzAMmk8zbqxj8DXAMOFXGPhc4AYC6tArNNKxeVhtTDbUow79fpRbYO40su4GbwO143QTUAAL7Mq5bAywrEDVBJfpEVKZVwM4Y3AD0ALuB2bHfhpw4bagDAbf1l3pH3eO/L6WLsc/povN5cS+hfs1weKueVetLQJvUvthva5FtQUBCV1FHyhjPlAAmx4WU35IS9h0B8Gu1RN/juhI1OQIsB54RNdYo0AZcAZrj2q8jem6LtT6gd8ZRXwfsckTtSa2fZNwV1HsBMc8VgI8Bu6yLswYYIJpostQaELO/ADwOcEyrL8feANTn+PwGegrAfWCyAvho/HsI6ChhD8m6CxhLanQjoEaJDhpNJom61IWpencExNhiaphoqAD+Tv1ZdO67ui2O1Ztz/Ydko+kO7axgA+X0PsCnuRQc9XMVNpCl9jSvGN5gNOzNhB4UsUpOr6vVbzMNLgdHXax2VwncUYaR+3fppDo0RehLdXNW/PToXE5ziGayA0QflEKG7wTwFLgVv0gy9Qe+yTNsCpGjpQAAAABJRU5ErkJggg==) center / 30px 30px no-repeat;
+            background: #2e88f7 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAAJgSURBVHicvZdfaE5xGMc/exulFAup1YxiUthIu2CF/Lvg0t9IuRE3EheS3KjVbrQbF25QuHJBSQ3ztzWKks3mSnKzGmq1bI3UPi7OOTm93/d837u9863T2+88z3k+v+c8zznneWtUAtUCbAdagRXAYmAWMA4MAYNAL/AIGA6KqOYd+9XnhmtCva625MXOMraoLyqAllKnWlMp/Pg0oWkNqitD4eerCE40oa7Ngx+eAXCiH+r8NK/Gv93eCHwJbf0p6hWwKVkUUoa7MwwG2AgcTRZJ5ruAh/8BDjAGzAMmk8zbqxj8DXAMOFXGPhc4AYC6tArNNKxeVhtTDbUow79fpRbYO40su4GbwO143QTUAAL7Mq5bAywrEDVBJfpEVKZVwM4Y3AD0ALuB2bHfhpw4bagDAbf1l3pH3eO/L6WLsc/povN5cS+hfs1weKueVetLQJvUvthva5FtQUBCV1FHyhjPlAAmx4WU35IS9h0B8Gu1RN/juhI1OQIsB54RNdYo0AZcAZrj2q8jem6LtT6gd8ZRXwfsckTtSa2fZNwV1HsBMc8VgI8Bu6yLswYYIJpostQaELO/ADwOcEyrL8feANTn+PwGegrAfWCyAvho/HsI6ChhD8m6CxhLanQjoEaJDhpNJom61IWpencExNhiaphoqAD+Tv1ZdO67ui2O1Ztz/Ydko+kO7axgA+X0PsCnuRQc9XMVNpCl9jSvGN5gNOzNhB4UsUpOr6vVbzMNLgdHXax2VwncUYaR+3fppDo0RehLdXNW/PToXE5ziGayA0QflEKG7wTwFLgVv0gy9Qe+yTNsCpGjpQAAAABJRU5ErkJggg==) center / 30px 30px no-repeat;
         }
         .footer2 .fp.handle {
             left: 278px; width: 203px; background: #e4e8ee; color: #000;
