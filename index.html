@@ -15,6 +15,8 @@
         html {
             color-scheme: light;
             width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
             -webkit-text-size-adjust: 100%;
             text-size-adjust: 100%;
         }
@@ -29,9 +31,11 @@
             flex-direction: column;
             touch-action: manipulation;
             overflow-x: hidden;
+            max-width: 100%;
+            width: 100%;
         }
 
-        /* === ГЛАВНОЕ ПРАВИЛО ДЛЯ iOS: ВСЕ ПОЛЯ ВВОДА — 16px === */
+        /* === ФИКС ДЛЯ iOS: ВСЕ ПОЛЯ ВВОДА — 16px === */
         input,
         select,
         textarea {
@@ -40,7 +44,10 @@
         }
 
         /* --- ВКЛАДКИ --- */
-        .tabs { display: flex; gap: 6px; width: 100%; max-width: 1100px; margin: 0 auto 12px; padding: 0; overflow-x: auto; }
+        .tabs {
+            display: flex; gap: 6px; width: 100%; max-width: 1100px;
+            margin: 0 auto 12px; padding: 0; overflow-x: auto;
+        }
         .tabs button {
             flex: 1 1 0; padding: 10px 16px; border: none; border-radius: 10px;
             background: #e5e5ea; color: #1a2b3c; font: inherit; font-size: 15px;
@@ -50,30 +57,48 @@
         .tabs button.active { background: #1a2b3c; color: #fff; }
 
         /* --- КОНТЕЙНЕР И ПАНЕЛЬ УПРАВЛЕНИЯ --- */
-        .app-container { display: flex; flex-direction: column; width: 100%; max-width: 1100px; align-items: center; gap: 16px; }
-        .controls { display: flex; flex-direction: column; gap: 8px; max-width: 521px; min-width: 0; width: 100%; }
+        .app-container {
+            display: flex; flex-direction: column; width: 100%; max-width: 1100px;
+            align-items: center; gap: 16px; min-width: 0;
+        }
+        .controls {
+            display: flex; flex-direction: column; gap: 8px;
+            max-width: 521px; min-width: 0; width: 100%;
+        }
         .row-label {
             display: flex; align-items: center; justify-content: space-between;
             background: #ffffff; padding: 12px 16px; border-radius: 12px;
             font-size: 16px; font-weight: 500; color: #1c1c1e;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02); gap: 12px;
-            touch-action: manipulation;
+            touch-action: manipulation; min-width: 0;
         }
         .col-label {
             display: flex; flex-direction: column; background: #ffffff; padding: 12px 16px;
             border-radius: 12px; font-size: 16px; font-weight: 500; color: #1c1c1e;
             gap: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
-            touch-action: manipulation;
+            touch-action: manipulation; min-width: 0;
         }
         .controls span { white-space: nowrap; }
         .controls input, .controls select, .controls textarea {
             padding: 10px 12px; font-family: inherit; border-radius: 8px;
-            border: none; background: #f2f2f7; color: #1c1c1e; outline: none; transition: background 0.2s;
-            touch-action: manipulation;
+            border: none; background: #f2f2f7; color: #1c1c1e; outline: none;
+            transition: background 0.2s; touch-action: manipulation;
+            min-width: 0; max-width: 100%;
         }
         .controls input:focus, .controls select:focus, .controls textarea:focus { background: #e5e5ea; }
         .row-label select, .row-label input { text-align: right; max-width: 160px; min-width: 0; }
         .controls details summary { cursor: pointer; font-weight: 500; padding: 4px 0; }
+
+        /* Поля ник + счёт: гибкие, не вылезают */
+        .nick-score-row {
+            display: flex; gap: 8px; align-items: center;
+            padding: 8px 12px; background: #f8f8fb; border-radius: 8px;
+            min-width: 0;
+        }
+        .nick-score-row input.nick { flex: 1 1 auto; min-width: 0; text-align: left; }
+        .nick-score-row input.score {
+            flex: 0 0 64px; width: 64px; min-width: 0; text-align: center;
+        }
 
         .controls input[type=color] {
             width: 44px; height: 36px; padding: 2px; cursor: pointer; flex-shrink: 0;
@@ -109,7 +134,7 @@
         .preview {
             position: relative; width: 100%; max-width: 521px; aspect-ratio: 1 / 1;
             flex-shrink: 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 12px; background: #2c3e50; order: -1;
+            border-radius: 12px; background: #2c3e50; order: -1; min-width: 0;
         }
         @media (min-width: 1100px) {
             .app-container { flex-direction: row; align-items: flex-start; justify-content: center; gap: 40px; }
@@ -128,6 +153,8 @@
             .color-row { gap: 8px; }
             .color-row label { font-size: 13px; }
             .controls input[type=color] { width: 40px; height: 34px; }
+            .nick-score-row { padding: 8px 10px; }
+            .nick-score-row input.score { flex: 0 0 56px; width: 56px; }
         }
 
         @media (max-width: 380px) {
@@ -135,6 +162,7 @@
             .tabs button { font-size: 13px; padding: 8px 10px; }
             .row-label, .col-label { padding: 9px 10px; font-size: 14px; }
             .row-label select, .row-label input { max-width: 110px; }
+            .nick-score-row input.score { flex: 0 0 50px; width: 50px; }
         }
 
         /* --- КАРТОЧКА --- */
@@ -230,6 +258,7 @@
             left: 179px; top: 1px; width: 42px; height: 42px;
             background: #9a5cf8 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAALNSURBVHicrZfLS1VRFMZ/93pNKykwwQwxiqsQ1KRBUT4QogdW/0MTnUQQQQ0i0B6DiggCoccgImjULFAhByGlERVUUJZBUiqRDXrg61rwNdjr6uF09rnnlh9s1jl7r/N9a++91j7npCSRAGuBPUAjsAmoBVYAM8A4MAwMAfeBzwXZJMW1rKRbknJKhpyk25Ia4njjBDsTCvnQVYxoSlLffwrm0S+ptJBoiaTnSySYxytJZUGddGiL+4CtSTKrCGyxBFtASovZexjojnn4NfATiEr3FLAGaIh5/jhwCVhY3uqY5bke3pOYVimpN4arVhIZi+KUJ7pu4AiuRg/ZbAjNNgVUmO0A2oAHQGsEXyfQjqSMpKmIqGYt+rYEyTIn6aakGUn1klZ6/HKSypG01+PQa6Ijof4fkq5IOibpjvX1mO+QpGd2PeHhPZgBWjxL+8VsRaDvEdAc8jtry/kQ2AY8tv6vwLoI3uY0kPWIlpqdNfvDBOuAEWAeGADe4s7kJqAEmDT/DNHYmAY2eAZTofuLZt8B9RZUC662PwA9BcTyyKaBqgJOefEBIywPje8zO1SAJ4+qNDBWwClfHq3Ab2AuNN5ndmdC0dE08DGh8wncrLO402kG6MfV5Xpgv/mFt+Uv0QzwxjM4b3a52VW4DG0CNgf86ljMWHAvd4BfHt7htEUbhUqzU4G+RmAauAGcBO7iVqom4DNh1pcr/fkzcyyiiL/b2AFPkftQJ2mZZ2xcgbP3srUgVuPO5HO4/ToKVHuiFzAKdAGfgHseP6dhs8lImvREd0bJ3zLIfVNFYVL2FRF8n7bgajEK08BT4JvdBzNUdl8N7PA8D67kBoIzzbfzRexdMbgQ1IlanqtLLHgtrOHbl64lEjwdxR+XELslvfhHsZeSdvm4k2Rju6TBhGKDkjoKcQaztxDqge24f5kaoAzI4f5dhoEnwPskRH8AZ0MT30dYLz8AAAAASUVORK5CYII=) center / 30px 30px no-repeat;
         }
+        /* === ЛОГО TELEGRAM (полная base64) === */
         .footer2 .fp.tg {
             left: 229px; top: 1px; width: 42px; height: 42px;
             background: #2e88f7 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAAJgSURBVHicvZdfaE5xGMc/exulFAup1YxiUthIu2CF/Lvg0t9IuRE3EheS3KjVbrQbF25QuHJBSQ3ztzWKks3mSnKzGmq1bI3UPi7OOTm93/d837u9863T2+88z3k+v+c8zznneWtUAtUCbAdagRXAYmAWMA4MAYNAL/AIGA6KqOYd+9XnhmtCva625MXOMraoLyqAllKnWlMp/Pg0oWkNqitD4eerCE40oa7Ngx+eAXCiH+r8NK/Gv93eCHwJbf0p6hWwKVkUUoa7MwwG2AgcTRZJ5ruAh/8BDjAGzAMmk8zbqxj8DXAMOFXGPhc4AYC6tArNNKxeVhtTDbUow79fpRbYO40su4GbwO143QTUAAL7Mq5bAywrEDVBJfpEVKZVwM4Y3AD0ALuB2bHfhpw4bagDAbf1l3pH3eO/L6WLsc/povN5cS+hfs1weKueVetLQJvUvthva5FtQUBCV1FHyhjPlAAmx4WU35IS9h0B8Gu1RN/juhI1OQIsB54RNdYo0AZcAZrj2q8jem6LtT6gd8ZRXwfsckTtSa2fZNwV1HsBMc8VgI8Bu6yLswYYIJpostQaELO/ADwOcEyrL8feANTn+PwGegrAfWCyAvho/HsI6ChhD8m6CxhLanQjoEaJDhpNJom61IWpencExNhiaphoqAD+Tv1ZdO67ui2O1Ztz/Ydko+kO7axgA+X0PsCnuRQc9XMVNpCl9jSvGN5gNOzNhB4UsUpOr6vVbzMNLgdHXax2VwncUYaR+3fppDo0RehLdXNW/PToXE5ziGayA0QflEKG7wTwFLgVv0gy9Qe+yTNsCpGjpQAAAABJRU5ErkJggg==) center / 30px 30px no-repeat;
@@ -286,16 +315,16 @@
 
             <div class="col-label">
                 <span>Левый игрок (ник из PLAYERS):</span>
-                <div class="row-label" style="box-shadow: none; padding: 8px 12px;">
-                    <input type="text" id="nickLeft" placeholder="nickname" autocomplete="off" style="text-align: left; flex: 1;" />
-                    <input type="text" id="scoreLeft" placeholder="счёт" autocomplete="off" style="text-align: center; width: 80px;" />
+                <div class="nick-score-row">
+                    <input type="text" id="nickLeft" class="nick" placeholder="nickname" autocomplete="off" />
+                    <input type="text" id="scoreLeft" class="score" placeholder="счёт" autocomplete="off" />
                 </div>
             </div>
             <div class="col-label">
                 <span>Правый игрок (ник из PLAYERS):</span>
-                <div class="row-label" style="box-shadow: none; padding: 8px 12px;">
-                    <input type="text" id="nickRight" placeholder="nickname" autocomplete="off" style="text-align: left; flex: 1;" />
-                    <input type="text" id="scoreRight" placeholder="счёт" autocomplete="off" style="text-align: center; width: 80px;" />
+                <div class="nick-score-row">
+                    <input type="text" id="nickRight" class="nick" placeholder="nickname" autocomplete="off" />
+                    <input type="text" id="scoreRight" class="score" placeholder="счёт" autocomplete="off" />
                 </div>
             </div>
 
