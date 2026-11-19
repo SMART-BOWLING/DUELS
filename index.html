@@ -35,15 +35,11 @@
             width: 100%;
         }
 
-        /* === ФИКС ДЛЯ iOS: ВСЕ ПОЛЯ ВВОДА — 16px === */
-        input,
-        select,
-        textarea {
+        input, select, textarea {
             font-size: 16px;
             -webkit-text-size-adjust: 100%;
         }
 
-        /* --- ВКЛАДКИ --- */
         .tabs {
             display: flex; gap: 6px; width: 100%; max-width: 1100px;
             margin: 0 auto 12px; padding: 0; overflow-x: auto;
@@ -56,7 +52,6 @@
         }
         .tabs button.active { background: #1a2b3c; color: #fff; }
 
-        /* --- КОНТЕЙНЕР И ПАНЕЛЬ УПРАВЛЕНИЯ --- */
         .app-container {
             display: flex; flex-direction: column; width: 100%; max-width: 1100px;
             align-items: center; gap: 16px; min-width: 0;
@@ -89,7 +84,6 @@
         .row-label select, .row-label input { text-align: right; max-width: 160px; min-width: 0; }
         .controls details summary { cursor: pointer; font-weight: 500; padding: 4px 0; }
 
-        /* Поля ник + счёт: гибкие, не вылезают */
         .nick-score-row {
             display: flex; gap: 8px; align-items: center;
             padding: 8px 12px; background: #f8f8fb; border-radius: 8px;
@@ -107,7 +101,6 @@
         .color-row { display: flex; gap: 12px; flex-wrap: wrap; }
         .color-row label { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #1c1c1e; font-weight: 500; }
 
-        /* --- КНОПКИ --- */
         .action-buttons { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
         .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
         .primary-btn, .secondary-btn {
@@ -120,7 +113,6 @@
         .primary-btn:active, .secondary-btn:active { transform: scale(0.98); }
         .secondary-btn:disabled, .primary-btn:disabled { opacity: 0.6; cursor: wait; }
 
-        /* --- СТАТУС --- */
         .status {
             max-width: 500px; margin: 10px auto; padding: 10px; border-radius: 6px;
             font-size: 14px; text-align: center; display: none;
@@ -130,7 +122,6 @@
         .status.error   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .status.info    { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
 
-        /* --- ПРЕВЬЮ --- */
         .preview {
             position: relative; width: 100%; max-width: 521px; aspect-ratio: 1 / 1;
             flex-shrink: 0; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -141,7 +132,6 @@
             .preview { order: 0; position: sticky; top: 16px; }
         }
 
-        /* --- МОБИЛЬНАЯ АДАПТАЦИЯ --- */
         @media (max-width: 600px) {
             body { padding: 10px 8px; }
             .tabs button { font-size: 14px; padding: 9px 12px; }
@@ -165,7 +155,6 @@
             .nick-score-row input.score { flex: 0 0 50px; width: 50px; }
         }
 
-        /* --- КАРТОЧКА --- */
         .board {
             position: absolute; top: 0; left: 0; width: 1000px; height: 1000px;
             background-size: cover; background-position: center; background-repeat: no-repeat;
@@ -258,10 +247,13 @@
             left: 179px; top: 1px; width: 42px; height: 42px;
             background: #9a5cf8 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAALNSURBVHicrZfLS1VRFMZ/93pNKykwwQwxiqsQ1KRBUT4QogdW/0MTnUQQQQ0i0B6DiggCoccgImjULFAhByGlERVUUJZBUiqRDXrg61rwNdjr6uF09rnnlh9s1jl7r/N9a++91j7npCSRAGuBPUAjsAmoBVYAM8A4MAwMAfeBzwXZJMW1rKRbknJKhpyk25Ia4njjBDsTCvnQVYxoSlLffwrm0S+ptJBoiaTnSySYxytJZUGddGiL+4CtSTKrCGyxBFtASovZexjojnn4NfATiEr3FLAGaIh5/jhwCVhY3uqY5bke3pOYVimpN4arVhIZi+KUJ7pu4AiuRg/ZbAjNNgVUmO0A2oAHQGsEXyfQjqSMpKmIqGYt+rYEyTIn6aakGUn1klZ6/HKSypG01+PQa6Ijof4fkq5IOibpjvX1mO+QpGd2PeHhPZgBWjxL+8VsRaDvEdAc8jtry/kQ2AY8tv6vwLoI3uY0kPWIlpqdNfvDBOuAEWAeGADe4s7kJqAEmDT/DNHYmAY2eAZTofuLZt8B9RZUC662PwA9BcTyyKaBqgJOefEBIywPje8zO1SAJ4+qNDBWwClfHq3Ab2AuNN5ndmdC0dE08DGh8wncrLO402kG6MfV5Xpgv/mFt+Uv0QzwxjM4b3a52VW4DG0CNgf86ljMWHAvd4BfHt7htEUbhUqzU4G+RmAauAGcBO7iVqom4DNh1pcr/fkzcyyiiL/b2AFPkftQJ2mZZ2xcgbP3srUgVuPO5HO4/ToKVHuiFzAKdAGfgHseP6dhs8lImvREd0bJ3zLIfVNFYVL2FRF8n7bgajEK08BT4JvdBzNUdl8N7PA8D67kBoIzzbfzRexdMbgQ1IlanqtLLHgtrOHbl64lEjwdxR+XELslvfhHsZeSdvm4k2Rju6TBhGKDkjoKcQaztxDqge24f5kaoAzI4f5dhoEnwPskRH8AZ0MT30dYLz8AAAAASUVORK5CYII=) center / 30px 30px no-repeat;
         }
+        /* === TELEGRAM — SVG, не обрезается при копировании === */
         .footer2 .fp.tg {
             left: 229px; top: 1px; width: 42px; height: 42px;
-            background: #2e88f7 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB8AAAAeCAYAAADU8sWcAAABdmlDQ1BJQ0MgUHJvZmlsZQAAeJx1kT1Lw1AUhp9WpWIrRXQQceigolBBFMRR69CliNQKVl3S2A8haUPSIsVVcHEoOIgufg3+A10FVwVBUAQRZ0e/FpF4rhEqojfcnIf33vdw8gb8CUM3ncZxMItlOxmPRebS85HAIy20EWSAsKY71sT0dIJ/19s1PlWvBlWv/+/9uYJLWUcHX7PwqG7ZZWGZhsRK2VK8IdyhF7Ql4T3hqC0DCp8rPePxg+K8xy+K7VRyEvyqZyT/gzM/WC/YpnC/cI9pVPTvedSXhLLF2RmpXbK7cUgSJ0aEDBWWMSgzKLUomf3tG/ryTVESjy5viyq2OPIUxBsVtSJds1JzomflMaiq3H/n6eRGhr3uoRg03bvucy8ENuGj5rrv+677cQANd3BarPtLktPYq+i1utazC+E1OD6ra5ktOFmHzltLs7UvqUG2P5eDpyNoTUP7JbQseFl9n3N4A6lV+UUXsL0DfXI/vPgJBhxoDIbKDO0AAAJgSURBVHicvZdfaE5xGMc/exulFAup1YxiUthIu2CF/Lvg0t9IuRE3EheS3KjVbrQbF25QuHJBSQ3ztzWKks3mSnKzGmq1bI3UPi7OOTm93/d837u9863T2+88z3k+v+c8zznneWtUAtUCbAdagRXAYmAWMA4MAYNAL/AIGA6KqOYd+9XnhmtCva625MXOMraoLyqAllKnWlMp/Pg0oWkNqitD4eerCE40oa7Ngx+eAXCiH+r8NK/Gv93eCHwJbf0p6hWwKVkUUoa7MwwG2AgcTRZJ5ruAh/8BDjAGzAMmk8zbqxj8DXAMOFXGPhc4AYC6tArNNKxeVhtTDbUow79fpRbYO40su4GbwO143QTUAAL7Mq5bAywrEDVBJfpEVKZVwM4Y3AD0ALuB2bHfhpw4bagDAbf1l3pH3eO/L6WLsc/povN5cS+hfs1weKueVetLQJvUvthva5FtQUBCV1FHyhjPlAAmx4WU35IS9h0B8Gu1RN/juhI1OQIsB54RNdYo0AZcAZrj2q8jem6LtT6gd8ZRXwfsckTtSa2fZNwV1HsBMc8VgI8Bu6yLswYYIJpostQaELO/ADwOcEyrL8feANTn+PwGegrAfWCyAvho/HsI6ChhD8m6CxhLanQjoEaJDhpNJom61IWpencExNhiaphoqAD+Tv1ZdO67ui2O1Ztz/Ydko+kO7axgA+X0PsCnuRQc9XMVNpCl9jSvGN5gNOzNhB4UsUpOr6vVbzMNLgdHXax2VwncUYaR+3fppDo0RehLdXNW/PToXE5ziGayA0QflEKG7wTwFLgVv0gy9Qe+yTNsCpGjpQAAAABJRU5ErkJggg==) center / 30px 30px no-repeat;
+            background: #2e88f7;
+            display: flex; align-items: center; justify-content: center;
         }
+        .footer2 .fp.tg svg { display: block; }
         .footer2 .fp.handle {
             left: 278px; width: 203px; background: #e4e8ee; color: #000;
             font-family: var(--font-label); font-weight: 600; font-size: 16.5px;
@@ -381,7 +373,11 @@
                 <div class="footer2">
                     <div class="fp brand"></div>
                     <div class="fp insta"></div>
-                    <div class="fp tg"></div>
+                    <div class="fp tg">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/>
+                        </svg>
+                    </div>
                     <div class="fp handle">/CSPORTS_OFFICIAL</div>
                     <div class="fp mappill" id="mapBadge">NUKE</div>
                 </div>
